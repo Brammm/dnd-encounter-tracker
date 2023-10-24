@@ -1,6 +1,7 @@
 'use client';
 import {create} from 'zustand';
 import {immer} from 'zustand/middleware/immer';
+import {persist} from 'zustand/middleware';
 
 export type Character = {
   id: string;
@@ -25,7 +26,7 @@ type Actions = {
 };
 
 const useApp = create<State & Actions>()(
-  immer((set) => ({
+  persist(immer((set) => ({
     encounters: {
       '1': {
         id: '1',
@@ -41,7 +42,7 @@ const useApp = create<State & Actions>()(
         draft.encounters[encounterId].characters.push({...character, id: nextId.toString()});
       });
     },
-  })),
+  })), {name: 'dnd-encounter-tracker'}),
 );
 
 export default useApp;
