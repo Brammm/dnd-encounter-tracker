@@ -26,23 +26,29 @@ type Actions = {
 };
 
 const useApp = create<State & Actions>()(
-  persist(immer((set) => ({
-    encounters: {
-      '1': {
-        id: '1',
-        name: 'Encounter 1',
-        characters: [],
+  persist(
+    immer((set) => ({
+      encounters: {
+        '1': {
+          id: '1',
+          name: 'Encounter 1',
+          characters: [],
+        },
       },
-    },
-    addCharacter: (encounterId, character) => {
-      set((draft) => {
-        const nextId =
-          Object.values(draft.encounters).reduce((total, encounter) => total + encounter.characters.length, 0) + 1;
+      addCharacter: (encounterId, character) => {
+        set((draft) => {
+          const nextId =
+            Object.values(draft.encounters).reduce((total, encounter) => total + encounter.characters.length, 0) + 1;
 
-        draft.encounters[encounterId].characters.push({...character, id: nextId.toString()});
-      });
-    },
-  })), {name: 'dnd-encounter-tracker'}),
+          draft.encounters[encounterId].characters.push({
+            ...character,
+            id: nextId.toString(),
+          });
+        });
+      },
+    })),
+    {name: 'dnd-encounter-tracker'},
+  ),
 );
 
 export default useApp;
