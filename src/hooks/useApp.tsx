@@ -14,6 +14,7 @@ export type Character = {
 export type HpChange = {
     characterId: string;
     amount: number;
+    changedHp: number;
 };
 
 export type Encounter = {
@@ -59,7 +60,20 @@ const useApp = create<State & Actions>()(
             },
             modifyHp: (encounterId, characterId, amount) => {
                 set((draft) => {
-                    draft.encounters[encounterId].hpChanges.push({characterId, amount});
+                    const character = draft.encounters[encounterId].characters.find(
+                        (character) => character.id === characterId,
+                    );
+                    if (!character || !character.hp) {
+                        throw new Error('Cannot modify character HP');
+                    }
+                    const hpChanges = draft.encounters[encounterId].hpChanges;
+
+                    const changedHp = Math.max(
+                        0,
+                        Math.min(character.hp, (hpChanges.at(-1)?.changedHp || character.hp) + amount),
+                    );
+
+                    hpChanges.push({characterId, amount, changedHp});
                 });
             },
         })),

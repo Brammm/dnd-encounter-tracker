@@ -18,7 +18,7 @@ export function CharacterRow({character, encounterId}: Props) {
         modifyHp(encounterId, character.id, parseInt(amount) * multiplier);
     };
 
-    const currentHp = (character.hp || 0) + hpChanges.reduce((total, hpChange) => total + hpChange.amount, 0);
+    const currentHp = hpChanges.length > 0 ? hpChanges.at(-1)!.changedHp : character.hp;
 
     return (
         <div className="flex border rounded-lg mb-2 border-gray-200">
