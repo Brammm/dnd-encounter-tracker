@@ -1,6 +1,7 @@
 import Icon from './Icon';
 import useApp, {Character} from '../hooks/useApp';
 import {useState} from 'react';
+import HiddenInput from './HiddenInput.tsx';
 
 type Props = {
     character: Character;
@@ -8,8 +9,9 @@ type Props = {
 };
 
 export function CharacterRow({character, encounterId}: Props) {
-    const {hpChanges, modifyHp} = useApp(({encounters, modifyHp}) => ({
+    const {hpChanges, modifyHp, updateInitiative} = useApp(({encounters, modifyHp, updateInitiative}) => ({
         modifyHp,
+        updateInitiative,
         hpChanges: encounters[encounterId].hpChanges.filter((hpChange) => hpChange.characterId === character.id),
     }));
     const [amount, setAmount] = useState<string>('');
@@ -24,7 +26,10 @@ export function CharacterRow({character, encounterId}: Props) {
         <div className="flex border rounded-lg mb-2 border-gray-200">
             <div className="flex flex-col bg-gray-200 p-2">
                 <span>Initiative</span>
-                <span>{character.initiative}</span>
+                <HiddenInput
+                    value={character.initiative.toString()}
+                    onChange={(value) => updateInitiative(encounterId, character.id, parseInt(value))}
+                />
             </div>
             <div className="place-self-center px-4 flex">
                 {character.type === 'PC' && <Icon className="h-4 mr-2 text-gray-400 place-self-center" type="player" />}

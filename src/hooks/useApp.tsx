@@ -31,6 +31,7 @@ type State = {
 type Actions = {
     addCharacter: (encounterId: string, character: Omit<Character, 'id'>) => void;
     modifyHp: (encounterId: string, characterId: string, amount: number) => void;
+    updateInitiative: (encounterId: string, characterId: string, initiative: number) => void;
 };
 
 const useApp = create<State & Actions>()(
@@ -45,28 +46,28 @@ const useApp = create<State & Actions>()(
                 },
             },
             addCharacter: (encounterId, character) => {
-                set((draft) => {
+                set((state) => {
                     const nextId =
-                        Object.values(draft.encounters).reduce(
+                        Object.values(state.encounters).reduce(
                             (total, encounter) => total + encounter.characters.length,
                             0,
                         ) + 1;
 
-                    draft.encounters[encounterId].characters.push({
+                    state.encounters[encounterId].characters.push({
                         ...character,
                         id: nextId.toString(),
                     });
                 });
             },
             modifyHp: (encounterId, characterId, amount) => {
-                set((draft) => {
-                    const character = draft.encounters[encounterId].characters.find(
+                set((state) => {
+                    const character = state.encounters[encounterId].characters.find(
                         (character) => character.id === characterId,
                     );
                     if (!character || !character.hp) {
                         throw new Error('Cannot modify character HP');
                     }
-                    const hpChanges = draft.encounters[encounterId].hpChanges;
+                    const hpChanges = state.encounters[encounterId].hpChanges;
 
                     const changedHp = Math.max(
                         0,
@@ -74,6 +75,18 @@ const useApp = create<State & Actions>()(
                     );
 
                     hpChanges.push({characterId, amount, changedHp});
+                });
+            },
+            updateInitiative: (encounterId, characterId, initiative) => {
+                set((state) => {
+                    const character = state.encounters[encounterId].characters.find(
+                        (character) => character.id === characterId,
+                    );
+                    if (!character) {
+                        throw new Error('Cannot modify character initiative');
+                    }
+
+                    character.initiative = initiative;
                 });
             },
         })),
