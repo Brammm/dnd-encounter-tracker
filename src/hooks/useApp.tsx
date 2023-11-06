@@ -32,6 +32,7 @@ type Actions = {
     addCharacter: (encounterId: string, character: Omit<Character, 'id'>) => void;
     modifyHp: (encounterId: string, characterId: string, amount: number) => void;
     updateInitiative: (encounterId: string, characterId: string, initiative: number) => void;
+    sortOnInitiative: (encounterId: string) => void;
 };
 
 const useApp = create<State & Actions>()(
@@ -87,6 +88,11 @@ const useApp = create<State & Actions>()(
                     }
 
                     character.initiative = initiative;
+                });
+            },
+            sortOnInitiative: (encounterId) => {
+                set((state) => {
+                    state.encounters[encounterId].characters.sort((a, b) => b.initiative - a.initiative);
                 });
             },
         })),

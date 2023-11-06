@@ -1,11 +1,13 @@
 import {CharacterRow} from './CharacterRow';
-import {Encounter} from '../hooks/useApp';
+import useApp, {Encounter} from '../hooks/useApp';
 
 type Props = {
     encounter: Encounter;
 };
 
 export default function EncounterView({encounter}: Props) {
+    const {sortOnInitiative} = useApp();
+
     return (
         <div>
             <div>
@@ -13,6 +15,8 @@ export default function EncounterView({encounter}: Props) {
                     return <CharacterRow character={character} encounterId={encounter.id} key={character.id} />;
                 })}
             </div>
+
+            <button onClick={() => sortOnInitiative(encounter.id)}>Sort</button>
         </div>
     );
 }
