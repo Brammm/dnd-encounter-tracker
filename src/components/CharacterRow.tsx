@@ -23,6 +23,11 @@ export function CharacterRow({character, encounterId}: Props) {
 
     const currentHp = hpChanges.length > 0 ? hpChanges.at(-1)!.changedHp : character.hp;
 
+    let hpPercentage: number | undefined;
+    if (character.hp !== undefined && currentHp !== undefined) {
+        hpPercentage = (currentHp / character.hp) * 100;
+    }
+
     return (
         <div
             className={clsx(
@@ -43,12 +48,31 @@ export function CharacterRow({character, encounterId}: Props) {
                 {character.name}
             </div>
             {character.hp !== undefined && (
-                <div className="flex border-l p-2 place-self-center">
-                    <div className="flex flex-col">
-                        <span>HP</span>
+                <div className="flex border-l p-2 place-items-center">
+                    <div className="relative">
                         <span>
-                            <abbr title={character.hp.toString()}>{currentHp}</abbr>
+                            <abbr title={character.hp.toString()}>{currentHp}</abbr> HP
                         </span>
+                        {hpPercentage !== undefined && (
+                            <div
+                                className={clsx(
+                                    'absolute bottom-0 w-full rounded-full h-1.5',
+                                    hpPercentage === 0 ? 'bg-black' : 'bg-gray-500',
+                                )}
+                            >
+                                <div
+                                    className={clsx(
+                                        'h-1.5 rounded-full',
+                                        hpPercentage >= 60
+                                            ? 'bg-green-600'
+                                            : hpPercentage >= 30
+                                            ? 'bg-orange-400'
+                                            : 'bg-red-500',
+                                    )}
+                                    style={{width: `${hpPercentage}%`}}
+                                ></div>
+                            </div>
+                        )}
                     </div>
                     <div>
                         <input
