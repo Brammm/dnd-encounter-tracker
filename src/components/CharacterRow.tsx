@@ -1,7 +1,7 @@
 import Icon from './Icon';
 import useApp, {Character} from '../hooks/useApp';
 import {useState} from 'react';
-import HiddenInput from './HiddenInput.tsx';
+import EditableText from './EditableText.tsx';
 
 type Props = {
     character: Character;
@@ -26,7 +26,7 @@ export function CharacterRow({character, encounterId}: Props) {
         <div className="flex border rounded-lg mb-2 border-gray-200">
             <div className="flex flex-col bg-gray-200 p-2">
                 <span>Initiative</span>
-                <HiddenInput
+                <EditableText
                     value={character.initiative.toString()}
                     onChange={(value) => updateInitiative(encounterId, character.id, parseInt(value))}
                 />
