@@ -9,6 +9,7 @@ export type Character = {
     name: string;
     initiative: number;
     hp?: number;
+    takingTurn: boolean;
 };
 
 export type HpChange = {
@@ -22,6 +23,7 @@ export type Encounter = {
     name: string;
     characters: Character[];
     hpChanges: HpChange[];
+    turn?: number;
 };
 
 type State = {
@@ -29,15 +31,17 @@ type State = {
 };
 
 type Actions = {
-    addCharacter: (encounterId: string, character: Omit<Character, 'id'>) => void;
+    addCharacter: (encounterId: string, character: Omit<Character, 'id' | 'takingTurn'>) => void;
     modifyHp: (encounterId: string, characterId: string, amount: number) => void;
     updateInitiative: (encounterId: string, characterId: string, initiative: number) => void;
     sortOnInitiative: (encounterId: string) => void;
+    startEncounter: (encounterId: string) => void;
+    nextCharacter: (encounterId: string) => void;
 };
 
 const useApp = create<State & Actions>()(
     persist(
-        immer((set) => ({
+        immer((set, get) => ({
             encounters: {
                 '1': {
                     id: '1',
@@ -57,18 +61,19 @@ const useApp = create<State & Actions>()(
                     state.encounters[encounterId].characters.push({
                         ...character,
                         id: nextId.toString(),
+                        takingTurn: false,
                     });
                 });
             },
             modifyHp: (encounterId, characterId, amount) => {
-                set((state) => {
-                    const character = state.encounters[encounterId].characters.find(
+                set(({encounters}) => {
+                    const character = encounters[encounterId].characters.find(
                         (character) => character.id === characterId,
                     );
                     if (!character || !character.hp) {
                         throw new Error('Cannot modify character HP');
                     }
-                    const hpChanges = state.encounters[encounterId].hpChanges;
+                    const hpChanges = encounters[encounterId].hpChanges;
 
                     const changedHp = Math.max(
                         0,
@@ -79,8 +84,8 @@ const useApp = create<State & Actions>()(
                 });
             },
             updateInitiative: (encounterId, characterId, initiative) => {
-                set((state) => {
-                    const character = state.encounters[encounterId].characters.find(
+                set(({encounters}) => {
+                    const character = encounters[encounterId].characters.find(
                         (character) => character.id === characterId,
                     );
                     if (!character) {
@@ -91,8 +96,39 @@ const useApp = create<State & Actions>()(
                 });
             },
             sortOnInitiative: (encounterId) => {
-                set((state) => {
-                    state.encounters[encounterId].characters.sort((a, b) => b.initiative - a.initiative);
+                set(({encounters}) => {
+                    encounters[encounterId].characters.sort((a, b) => b.initiative - a.initiative);
+                });
+            },
+            startEncounter: (encounterId) => {
+                if (get().encounters[encounterId].turn) {
+                    return;
+                }
+
+                set(({encounters}) => {
+                    encounters[encounterId].turn = 1;
+                    if (encounters[encounterId].characters[0]) {
+                        encounters[encounterId].characters[0].takingTurn = true;
+                    }
+                });
+            },
+            nextCharacter: (encounterId) => {
+                const characters = get().encounters[encounterId].characters;
+                const characterTakingTurnIndex = characters.findIndex((character) => character.takingTurn);
+
+                if (characterTakingTurnIndex === -1 || !get().encounters[encounterId].turn) {
+                    return;
+                }
+
+                const nextRoundIndex =
+                    characterTakingTurnIndex === characters.length - 1 ? 0 : characterTakingTurnIndex + 1;
+
+                set(({encounters}) => {
+                    encounters[encounterId].characters[characterTakingTurnIndex].takingTurn = false;
+                    encounters[encounterId].characters[nextRoundIndex].takingTurn = true;
+                    if (nextRoundIndex === 0) {
+                        encounters[encounterId].turn!++;
+                    }
                 });
             },
         })),

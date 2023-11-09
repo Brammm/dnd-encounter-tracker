@@ -2,6 +2,7 @@ import Icon from './Icon';
 import useApp, {Character} from '../hooks/useApp';
 import {useState} from 'react';
 import EditableText from './EditableText.tsx';
+import {clsx} from 'clsx';
 
 type Props = {
     character: Character;
@@ -23,8 +24,13 @@ export function CharacterRow({character, encounterId}: Props) {
     const currentHp = hpChanges.length > 0 ? hpChanges.at(-1)!.changedHp : character.hp;
 
     return (
-        <div className="flex border rounded-lg mb-2 border-gray-200">
-            <div className="flex flex-col bg-gray-200 p-2">
+        <div
+            className={clsx(
+                'flex border rounded-lg mb-2',
+                character.takingTurn ? 'border-cyan-400' : 'border-gray-200',
+            )}
+        >
+            <div className={clsx('flex flex-col p-2 rounded-l', character.takingTurn ? 'bg-cyan-400' : 'bg-gray-200')}>
                 <span>Initiative</span>
                 <EditableText
                     value={character.initiative.toString()}

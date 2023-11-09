@@ -6,10 +6,12 @@ type Props = {
 };
 
 export default function EncounterView({encounter}: Props) {
-    const {sortOnInitiative} = useApp();
+    const {nextCharacter, sortOnInitiative, startEncounter} = useApp();
 
     return (
         <div>
+            {encounter.turn && <p>Turn {encounter.turn}</p>}
+
             <div>
                 {encounter.characters.map((character) => {
                     return <CharacterRow character={character} encounterId={encounter.id} key={character.id} />;
@@ -17,6 +19,11 @@ export default function EncounterView({encounter}: Props) {
             </div>
 
             <button onClick={() => sortOnInitiative(encounter.id)}>Sort</button>
+            {encounter.turn ? (
+                <button onClick={() => nextCharacter(encounter.id)}>Next character</button>
+            ) : (
+                <button onClick={() => startEncounter(encounter.id)}>Start encounter</button>
+            )}
         </div>
     );
 }
