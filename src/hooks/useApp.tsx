@@ -37,6 +37,7 @@ type Actions = {
     sortOnInitiative: (encounterId: string) => void;
     startEncounter: (encounterId: string) => void;
     nextCharacter: (encounterId: string) => void;
+    resetEncounter: (encounterId: string) => void;
 };
 
 const useApp = create<State & Actions>()(
@@ -129,6 +130,15 @@ const useApp = create<State & Actions>()(
                     if (nextRoundIndex === 0) {
                         encounters[encounterId].turn!++;
                     }
+                });
+            },
+            resetEncounter: (encounterId) => {
+                set(({encounters}) => {
+                    encounters[encounterId].hpChanges = [];
+                    encounters[encounterId].turn = undefined;
+                    encounters[encounterId].characters.forEach((character) => {
+                        character.takingTurn = false;
+                    });
                 });
             },
         })),
