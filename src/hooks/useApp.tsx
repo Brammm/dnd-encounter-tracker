@@ -16,6 +16,7 @@ export type HpChange = {
     characterId: string;
     amount: number;
     changedHp: number;
+    turn: number;
 };
 
 export type Encounter = {
@@ -81,7 +82,7 @@ const useApp = create<State & Actions>()(
                         Math.min(character.hp, (hpChanges.at(-1)?.changedHp || character.hp) + amount),
                     );
 
-                    hpChanges.push({characterId, amount, changedHp});
+                    hpChanges.push({characterId, amount, changedHp, turn: encounters[encounterId].turn || 1});
                 });
             },
             updateInitiative: (encounterId, characterId, initiative) => {
