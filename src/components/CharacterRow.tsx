@@ -113,11 +113,16 @@ export function CharacterRow({character, encounterId}: Props) {
                 )}
             </div>
             {showHistory && (
-                <div className="rounded-b-lg border-b border-x">
+                <div
+                    className={clsx(
+                        'rounded-b-lg border-b border-x',
+                        character.takingTurn ? 'border-cyan-400' : 'border-gray-200',
+                    )}
+                >
                     <ul>
                         {hpChanges.map((change, i) => (
                             <li key={i}>
-                                {change.amount} &rarr; {change.changedHp}
+                                Turn {change.turn}: {change.amount}HP <small>({change.changedHp}HP)</small>
                             </li>
                         ))}
                     </ul>

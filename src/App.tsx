@@ -19,13 +19,13 @@ export default function App() {
                         </button>
                     ))}
                 </nav>
-                <EncounterView encounter={activeEncounter} />
-
                 <AddCharacterForm
                     onAdd={(type, name, initiative, hp) => {
                         addCharacter(activeEncounterId, {type, name, initiative, hp});
                     }}
                 />
+
+                <EncounterView encounter={activeEncounter} />
             </div>
         </main>
     );
