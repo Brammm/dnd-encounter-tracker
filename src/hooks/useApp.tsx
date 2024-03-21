@@ -32,6 +32,7 @@ type State = {
 };
 
 type Actions = {
+    addEncounter: () => void;
     addCharacter: (encounterId: string, character: Omit<Character, 'id' | 'takingTurn'>) => void;
     modifyHp: (encounterId: string, characterId: string, amount: number) => void;
     updateInitiative: (encounterId: string, characterId: string, initiative: number) => void;
@@ -51,6 +52,12 @@ const useApp = create<State & Actions>()(
                     characters: [],
                     hpChanges: [],
                 },
+            },
+            addEncounter: () => {
+                set((state) => {
+                    const nextId = (Object.values(state.encounters).length + 1).toString();
+                    state.encounters[nextId] = {id: nextId, name: 'Encounter ' + nextId, characters: [], hpChanges: []};
+                });
             },
             addCharacter: (encounterId, character) => {
                 set((state) => {
