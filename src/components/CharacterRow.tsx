@@ -44,13 +44,13 @@ export function CharacterRow({character, encounterId}: Props) {
     };
 
     return (
-        <div className={clsx('mb-2 border rounded-lg', character.takingTurn ? 'border-cyan-400' : 'border-gray-200')}>
+        <div className={clsx('mb-2 border rounded-lg', character.takingTurn ? 'border-primary' : 'border-gray-200')}>
             <div className={clsx('flex')}>
                 <div
                     className={clsx(
                         'flex flex-col p-2',
                         showHistory ? 'rounded-tl-lg' : 'rounded-l-lg',
-                        character.takingTurn ? 'bg-cyan-400' : 'bg-gray-200',
+                        character.takingTurn ? 'bg-primary' : 'bg-gray-200',
                     )}
                 >
                     <span>Initiative</span>
@@ -73,7 +73,7 @@ export function CharacterRow({character, encounterId}: Props) {
                     <div
                         className={clsx(
                             'flex border-l p-2 place-items-center',
-                            character.takingTurn ? 'border-cyan-400' : 'border-gray-200',
+                            character.takingTurn ? 'border-primary' : 'border-gray-200',
                         )}
                     >
                         <div className="relative">
@@ -126,7 +126,7 @@ export function CharacterRow({character, encounterId}: Props) {
                 )}
             </div>
             {showHistory && (
-                <div className={clsx('border-t', character.takingTurn ? 'border-cyan-400' : 'border-gray-200')}>
+                <div className={clsx('border-t', character.takingTurn ? 'border-primary' : 'border-gray-200')}>
                     <ul>
                         {hpChanges.map((change, i) => (
                             <li key={i}>
