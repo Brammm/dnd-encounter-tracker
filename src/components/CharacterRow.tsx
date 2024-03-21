@@ -10,9 +10,10 @@ type Props = {
 };
 
 export function CharacterRow({character, encounterId}: Props) {
-    const {deleteCharacter, hpChanges, modifyHp, updateInitiative} = useApp(
-        ({deleteCharacter, encounters, modifyHp, updateInitiative}) => ({
+    const {deleteCharacter, hpChanges, modifyHp, renameCharacter, updateInitiative} = useApp(
+        ({deleteCharacter, encounters, modifyHp, renameCharacter, updateInitiative}) => ({
             deleteCharacter,
+            renameCharacter,
             modifyHp,
             updateInitiative,
             hpChanges: encounters[encounterId].hpChanges.filter((hpChange) => hpChange.characterId === character.id),
@@ -63,7 +64,10 @@ export function CharacterRow({character, encounterId}: Props) {
                         <CharacterIcon className="h-4 mr-2 text-gray-400 place-self-center group-hover:hidden" />
                         <XMarkIcon className="h-4 mr-2 text-gray-400 place-self-center hidden group-hover:inline-block" />
                     </button>
-                    {character.name}
+                    <EditableText
+                        value={character.name}
+                        onChange={(value) => renameCharacter(encounterId, character.id, value)}
+                    />
                 </div>
                 {character.hp !== undefined && (
                     <div

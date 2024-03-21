@@ -38,6 +38,7 @@ type Actions = {
     addEncounter: () => void;
     addCharacter: (encounterId: EncounterId, character: Omit<Character, 'id' | 'takingTurn'>) => void;
     deleteCharacter: (encounterId: EncounterId, characterId: CharacterId) => void;
+    renameCharacter: (encounterId: EncounterId, characterId: CharacterId, name: string) => void;
     modifyHp: (encounterId: EncounterId, characterId: CharacterId, amount: number) => void;
     updateInitiative: (encounterId: EncounterId, characterId: CharacterId, initiative: number) => void;
     sortOnInitiative: (encounterId: EncounterId) => void;
@@ -81,10 +82,23 @@ const useApp = create<State & Actions>()(
             deleteCharacter: (encounterId, characterId) => {
                 set((state) => {
                     state.encounters[encounterId].characters = state.encounters[encounterId].characters.filter(
-                        (character) => character.id !== encounterId,
+                        (character) => character.id !== characterId,
                     );
                     state.encounters[encounterId].hpChanges = state.encounters[encounterId].hpChanges.filter(
                         (change) => change.characterId !== characterId,
+                    );
+                });
+            },
+            renameCharacter: (encounterId, characterId, name) => {
+                set((state) => {
+                    state.encounters[encounterId].characters = state.encounters[encounterId].characters.map(
+                        (character) => {
+                            if (character.id === characterId) {
+                                character.name = name;
+                            }
+
+                            return character;
+                        },
                     );
                 });
             },
