@@ -2,7 +2,7 @@ import useApp, {Character} from '../hooks/useApp';
 import {useState} from 'react';
 import EditableText from './EditableText.tsx';
 import {clsx} from 'clsx';
-import {BugAntIcon, ChevronDownIcon, ChevronUpIcon, UserIcon} from '@heroicons/react/24/solid';
+import {BugAntIcon, ChevronDownIcon, ChevronUpIcon, UserIcon, XMarkIcon} from '@heroicons/react/24/solid';
 
 type Props = {
     character: Character;
@@ -10,11 +10,14 @@ type Props = {
 };
 
 export function CharacterRow({character, encounterId}: Props) {
-    const {hpChanges, modifyHp, updateInitiative} = useApp(({encounters, modifyHp, updateInitiative}) => ({
-        modifyHp,
-        updateInitiative,
-        hpChanges: encounters[encounterId].hpChanges.filter((hpChange) => hpChange.characterId === character.id),
-    }));
+    const {deleteCharacter, hpChanges, modifyHp, updateInitiative} = useApp(
+        ({deleteCharacter, encounters, modifyHp, updateInitiative}) => ({
+            deleteCharacter,
+            modifyHp,
+            updateInitiative,
+            hpChanges: encounters[encounterId].hpChanges.filter((hpChange) => hpChange.characterId === character.id),
+        }),
+    );
     const [amount, setAmount] = useState<string>('');
     const [showHistory, setShowHistory] = useState<boolean>(false);
 
@@ -28,6 +31,16 @@ export function CharacterRow({character, encounterId}: Props) {
     if (character.hp !== undefined && currentHp !== undefined) {
         hpPercentage = (currentHp / character.hp) * 100;
     }
+
+    const CharacterIcon = character.type === 'PC' ? UserIcon : BugAntIcon;
+
+    const handleDelete = () => {
+        if (!confirm('Are you sure you wish to delete this character?')) {
+            return;
+        }
+
+        deleteCharacter(encounterId, character.id);
+    };
 
     return (
         <div className={clsx('mb-2 border rounded-lg', character.takingTurn ? 'border-cyan-400' : 'border-gray-200')}>
@@ -46,8 +59,10 @@ export function CharacterRow({character, encounterId}: Props) {
                     />
                 </div>
                 <div className="place-self-center px-4 flex">
-                    {character.type === 'PC' && <UserIcon className="h-4 mr-2 text-gray-400 place-self-center" />}
-                    {character.type === 'NPC' && <BugAntIcon className="h-4 mr-2 text-gray-400 place-self-center" />}
+                    <button className="group" onClick={handleDelete} type="button">
+                        <CharacterIcon className="h-4 mr-2 text-gray-400 place-self-center group-hover:hidden" />
+                        <XMarkIcon className="h-4 mr-2 text-gray-400 place-self-center hidden group-hover:inline-block" />
+                    </button>
                     {character.name}
                 </div>
                 {character.hp !== undefined && (

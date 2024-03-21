@@ -3,8 +3,11 @@ import {create} from 'zustand';
 import {immer} from 'zustand/middleware/immer';
 import {persist} from 'zustand/middleware';
 
+type EncounterId = string;
+type CharacterId = string;
+
 export type Character = {
-    id: string;
+    id: CharacterId;
     type: 'PC' | 'NPC';
     name: string;
     initiative: number;
@@ -13,14 +16,14 @@ export type Character = {
 };
 
 export type HpChange = {
-    characterId: string;
+    characterId: CharacterId;
     amount: number;
     changedHp: number;
     turn: number;
 };
 
 export type Encounter = {
-    id: string;
+    id: EncounterId;
     name: string;
     characters: Character[];
     hpChanges: HpChange[];
@@ -28,18 +31,19 @@ export type Encounter = {
 };
 
 type State = {
-    encounters: Record<string, Encounter>;
+    encounters: Record<EncounterId, Encounter>;
 };
 
 type Actions = {
     addEncounter: () => void;
-    addCharacter: (encounterId: string, character: Omit<Character, 'id' | 'takingTurn'>) => void;
-    modifyHp: (encounterId: string, characterId: string, amount: number) => void;
-    updateInitiative: (encounterId: string, characterId: string, initiative: number) => void;
-    sortOnInitiative: (encounterId: string) => void;
-    startEncounter: (encounterId: string) => void;
-    nextCharacter: (encounterId: string) => void;
-    resetEncounter: (encounterId: string) => void;
+    addCharacter: (encounterId: EncounterId, character: Omit<Character, 'id' | 'takingTurn'>) => void;
+    deleteCharacter: (encounterId: EncounterId, characterId: CharacterId) => void;
+    modifyHp: (encounterId: EncounterId, characterId: CharacterId, amount: number) => void;
+    updateInitiative: (encounterId: EncounterId, characterId: CharacterId, initiative: number) => void;
+    sortOnInitiative: (encounterId: EncounterId) => void;
+    startEncounter: (encounterId: EncounterId) => void;
+    nextCharacter: (encounterId: EncounterId) => void;
+    resetEncounter: (encounterId: EncounterId) => void;
 };
 
 const useApp = create<State & Actions>()(
@@ -72,6 +76,16 @@ const useApp = create<State & Actions>()(
                         id: nextId.toString(),
                         takingTurn: false,
                     });
+                });
+            },
+            deleteCharacter: (encounterId, characterId) => {
+                set((state) => {
+                    state.encounters[encounterId].characters = state.encounters[encounterId].characters.filter(
+                        (character) => character.id !== encounterId,
+                    );
+                    state.encounters[encounterId].hpChanges = state.encounters[encounterId].hpChanges.filter(
+                        (change) => change.characterId !== characterId,
+                    );
                 });
             },
             modifyHp: (encounterId, characterId, amount) => {
