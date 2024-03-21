@@ -1,8 +1,8 @@
-import Icon from './Icon';
 import useApp, {Character} from '../hooks/useApp';
 import {useState} from 'react';
 import EditableText from './EditableText.tsx';
 import {clsx} from 'clsx';
+import {BugAntIcon, ChevronDownIcon, ChevronUpIcon, UserIcon} from '@heroicons/react/24/solid';
 
 type Props = {
     character: Character;
@@ -30,19 +30,12 @@ export function CharacterRow({character, encounterId}: Props) {
     }
 
     return (
-        <div className="mb-2">
-            <div
-                className={clsx(
-                    'flex border',
-                    showHistory ? 'rounded-t-lg' : 'rounded-lg',
-                    character.takingTurn ? 'border-cyan-400' : 'border-gray-200',
-                )}
-            >
+        <div className={clsx('mb-2 border rounded-lg', character.takingTurn ? 'border-cyan-400' : 'border-gray-200')}>
+            <div className={clsx('flex')}>
                 <div
                     className={clsx(
                         'flex flex-col p-2',
                         showHistory ? 'rounded-tl-lg' : 'rounded-l-lg',
-                        character.takingTurn ? 'border-cyan-400' : 'border-gray-200',
                         character.takingTurn ? 'bg-cyan-400' : 'bg-gray-200',
                     )}
                 >
@@ -53,16 +46,17 @@ export function CharacterRow({character, encounterId}: Props) {
                     />
                 </div>
                 <div className="place-self-center px-4 flex">
-                    {character.type === 'PC' && (
-                        <Icon className="h-4 mr-2 text-gray-400 place-self-center" type="player" />
-                    )}
-                    {character.type === 'NPC' && (
-                        <Icon className="h-4 mr-2 text-gray-400 place-self-center" type="skull" />
-                    )}
+                    {character.type === 'PC' && <UserIcon className="h-4 mr-2 text-gray-400 place-self-center" />}
+                    {character.type === 'NPC' && <BugAntIcon className="h-4 mr-2 text-gray-400 place-self-center" />}
                     {character.name}
                 </div>
                 {character.hp !== undefined && (
-                    <div className="flex border-l p-2 place-items-center">
+                    <div
+                        className={clsx(
+                            'flex border-l p-2 place-items-center',
+                            character.takingTurn ? 'border-cyan-400' : 'border-gray-200',
+                        )}
+                    >
                         <div className="relative">
                             <span>
                                 <abbr title={character.hp.toString()}>{currentHp}</abbr> HP
@@ -107,18 +101,13 @@ export function CharacterRow({character, encounterId}: Props) {
                 {hpChanges.length > 0 && (
                     <div className="flex ml-auto place-items-center border-l px-2">
                         <button onClick={() => setShowHistory(!showHistory)}>
-                            <Icon type={showHistory ? 'chevronup' : 'chevrondown'} className="h-4" />
+                            {showHistory ? <ChevronUpIcon className="h-4" /> : <ChevronDownIcon className="h-4" />}
                         </button>
                     </div>
                 )}
             </div>
             {showHistory && (
-                <div
-                    className={clsx(
-                        'rounded-b-lg border-b border-x',
-                        character.takingTurn ? 'border-cyan-400' : 'border-gray-200',
-                    )}
-                >
+                <div className={clsx('border-t', character.takingTurn ? 'border-cyan-400' : 'border-gray-200')}>
                     <ul>
                         {hpChanges.map((change, i) => (
                             <li key={i}>
