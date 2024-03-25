@@ -5,6 +5,7 @@ import {clsx} from 'clsx';
 import {BugAntIcon, ChevronDownIcon, ChevronUpIcon, UserIcon, XMarkIcon} from '@heroicons/react/24/solid';
 import ModifyHealth from './ModifyHealth.tsx';
 import InitiativeInput from './InitiativeInput.tsx';
+import HpHistory from './HpHistory.tsx';
 
 type Props = {
     character: Character;
@@ -112,14 +113,8 @@ export function CharacterRow({character, encounterId}: Props) {
                 )}
             </div>
             {showHistory && (
-                <div className={clsx('border-t', character.takingTurn ? 'border-primary' : 'border-gray-200')}>
-                    <ul>
-                        {hpChanges.map((change, i) => (
-                            <li key={i}>
-                                Turn {change.turn}: {change.amount}HP <small>({change.changedHp}HP)</small>
-                            </li>
-                        ))}
-                    </ul>
+                <div className={clsx('border-t p-4', character.takingTurn ? 'border-primary' : 'border-gray-200')}>
+                    <HpHistory hpChanges={hpChanges} />
                 </div>
             )}
         </div>
