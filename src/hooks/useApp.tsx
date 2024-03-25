@@ -3,8 +3,8 @@ import {create} from 'zustand';
 import {immer} from 'zustand/middleware/immer';
 import {persist} from 'zustand/middleware';
 
-type EncounterId = string;
-type CharacterId = string;
+export type EncounterId = string;
+export type CharacterId = string;
 
 export type Character = {
     id: CharacterId;

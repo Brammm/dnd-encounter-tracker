@@ -7,5 +7,7 @@ type Props = {
 };
 
 export default function InitiativeInput({id, name}: Props) {
-    return <input id={id} name={name} type="number" className={clsx(defaultClassName, 'w-20')} step={1} min={0} />;
+    return (
+        <input id={id} name={name} type="number" className={clsx(defaultClassName, 'w-16')} step={1} min={1} max={30} />
+    );
 }

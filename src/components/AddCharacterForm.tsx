@@ -53,11 +53,11 @@ export default function AddCharacterForm({onAdd}: Props) {
             <InputGroup id="name" label="Name">
                 <Input name="name" />
             </InputGroup>
-            <InputGroup id="initiative" label="Initiative">
-                <InitiativeInput name="initiative" />
-            </InputGroup>
             <InputGroup id="hp" label="HP">
                 <HpInput name="hp" />
+            </InputGroup>
+            <InputGroup id="initiative" label="Initiative">
+                <InitiativeInput name="initiative" />
             </InputGroup>
             <div className="flex flex-col justify-end">
                 <Button submit>Add</Button>

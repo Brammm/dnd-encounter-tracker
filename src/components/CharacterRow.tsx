@@ -3,6 +3,7 @@ import {useState} from 'react';
 import EditableText from './EditableText.tsx';
 import {clsx} from 'clsx';
 import {BugAntIcon, ChevronDownIcon, ChevronUpIcon, UserIcon, XMarkIcon} from '@heroicons/react/24/solid';
+import ModifyHealth from './ModifyHealth.tsx';
 
 type Props = {
     character: Character;
@@ -10,21 +11,15 @@ type Props = {
 };
 
 export function CharacterRow({character, encounterId}: Props) {
-    const {deleteCharacter, hpChanges, modifyHp, renameCharacter, updateInitiative} = useApp(
-        ({deleteCharacter, encounters, modifyHp, renameCharacter, updateInitiative}) => ({
+    const {deleteCharacter, hpChanges, renameCharacter, updateInitiative} = useApp(
+        ({deleteCharacter, encounters, renameCharacter, updateInitiative}) => ({
             deleteCharacter,
             renameCharacter,
-            modifyHp,
             updateInitiative,
             hpChanges: encounters[encounterId].hpChanges.filter((hpChange) => hpChange.characterId === character.id),
         }),
     );
-    const [amount, setAmount] = useState<string>('');
     const [showHistory, setShowHistory] = useState<boolean>(false);
-
-    const handleModify = (multiplier: number = 1) => {
-        modifyHp(encounterId, character.id, parseInt(amount) * multiplier);
-    };
 
     const currentHp = hpChanges.length > 0 ? hpChanges.at(-1)!.changedHp : character.hp;
 
@@ -72,7 +67,7 @@ export function CharacterRow({character, encounterId}: Props) {
                 {character.hp !== undefined && (
                     <div
                         className={clsx(
-                            'flex border-l p-2 place-items-center',
+                            'flex border-l p-2 place-items-center gap-x-4',
                             character.takingTurn ? 'border-primary' : 'border-gray-200',
                         )}
                     >
@@ -101,20 +96,7 @@ export function CharacterRow({character, encounterId}: Props) {
                                 </div>
                             )}
                         </div>
-                        <div>
-                            <input
-                                type="number"
-                                name={`character-hp-${character.id}`}
-                                value={amount}
-                                onChange={(e) => setAmount(e.currentTarget.value)}
-                            />
-                            <button type="button" onClick={() => handleModify()}>
-                                Heal
-                            </button>
-                            <button type="button" onClick={() => handleModify(-1)}>
-                                Damage
-                            </button>
-                        </div>
+                        <ModifyHealth characterId={character.id} encounterId={encounterId} />
                     </div>
                 )}
                 {hpChanges.length > 0 && (
