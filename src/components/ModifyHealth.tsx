@@ -21,7 +21,7 @@ export default function ModifyHealth({characterId, encounterId}: Props) {
                 id={`character-hp-${characterId}`}
                 name={`character-hp-${characterId}`}
                 type="number"
-                className="w-20 rounded-l border border-gray-300 bg-gray-100"
+                className="w-20 rounded-l border border-gray-300"
                 step={1}
                 min={1}
                 value={amount}

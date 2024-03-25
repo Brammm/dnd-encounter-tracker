@@ -40,7 +40,7 @@ export default function App() {
                             addCharacter(activeEncounterId, {type, name, initiative, hp});
                         }}
                     />
-
+                    <hr />
                     <EncounterView encounter={activeEncounter} />
                 </main>
             </div>
