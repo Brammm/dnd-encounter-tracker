@@ -39,7 +39,7 @@ export function CharacterRow({character, encounterId}: Props) {
     };
 
     return (
-        <div className={clsx('mb-2 border rounded-lg', character.takingTurn ? 'border-primary' : 'border-gray-200')}>
+        <div className={clsx('border rounded-lg', character.takingTurn ? 'border-primary' : 'border-gray-200')}>
             <div className={clsx('flex')}>
                 <div
                     className={clsx(
