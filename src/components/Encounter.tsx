@@ -1,5 +1,6 @@
 import {CharacterRow} from './CharacterRow';
 import useApp, {Encounter} from '../hooks/useApp';
+import Button from './Button.tsx';
 
 type Props = {
     encounter: Encounter;
@@ -18,15 +19,17 @@ export default function EncounterView({encounter}: Props) {
                 })}
             </div>
 
-            <button onClick={() => sortOnInitiative(encounter.id)}>Sort</button>
-            {encounter.turn ? (
-                <>
-                    <button onClick={() => nextCharacter(encounter.id)}>Next character</button>
-                    <button onClick={() => resetEncounter(encounter.id)}>Reset encounter</button>
-                </>
-            ) : (
-                <button onClick={() => startEncounter(encounter.id)}>Start encounter</button>
-            )}
+            <div className="flex gap-x-4">
+                <Button onClick={() => sortOnInitiative(encounter.id)}>Sort</Button>
+                {encounter.turn ? (
+                    <>
+                        <Button onClick={() => nextCharacter(encounter.id)}>Next character</Button>
+                        <Button onClick={() => resetEncounter(encounter.id)}>Reset encounter</Button>
+                    </>
+                ) : (
+                    <Button onClick={() => startEncounter(encounter.id)}>Start encounter</Button>
+                )}
+            </div>
         </div>
     );
 }
