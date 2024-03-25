@@ -2,6 +2,7 @@
 import {create} from 'zustand';
 import {immer} from 'zustand/middleware/immer';
 import {persist} from 'zustand/middleware';
+import {ulid} from 'ulid';
 
 export type EncounterId = string;
 export type CharacterId = string;
@@ -60,21 +61,20 @@ const useApp = create<State & Actions>()(
             },
             addEncounter: () => {
                 set((state) => {
-                    const nextId = (Object.values(state.encounters).length + 1).toString();
-                    state.encounters[nextId] = {id: nextId, name: 'Encounter ' + nextId, characters: [], hpChanges: []};
+                    const nextId = ulid();
+                    state.encounters[nextId] = {
+                        id: nextId,
+                        name: 'Encounter ' + (Object.values(state.encounters).length + 1).toString(),
+                        characters: [],
+                        hpChanges: [],
+                    };
                 });
             },
             addCharacter: (encounterId, character) => {
                 set((state) => {
-                    const nextId =
-                        Object.values(state.encounters).reduce(
-                            (total, encounter) => total + encounter.characters.length,
-                            0,
-                        ) + 1;
-
                     state.encounters[encounterId].characters.push({
                         ...character,
-                        id: nextId.toString(),
+                        id: ulid(),
                         takingTurn: false,
                     });
                 });
