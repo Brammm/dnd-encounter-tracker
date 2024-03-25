@@ -1,12 +1,20 @@
-import {KeyboardEvent, ChangeEvent, useRef, useState} from 'react';
+import {KeyboardEvent, ChangeEvent, useRef, useState, RefObject, ReactElement} from 'react';
 import {flushSync} from 'react-dom';
+
+type InputProps = {
+    defaultValue: string;
+    onBlur: (e: ChangeEvent<HTMLInputElement>) => void;
+    onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
+    ref: RefObject<HTMLInputElement>;
+};
 
 type Props = {
     value: string;
     onChange: (value: string) => void;
+    children?: (props: InputProps) => ReactElement;
 };
 
-export default function EditableText({onChange, value}: Props) {
+export default function EditableText({children, onChange, value}: Props) {
     const [editing, setEditing] = useState(false);
     const ref = useRef<HTMLInputElement>(null);
 
@@ -14,6 +22,7 @@ export default function EditableText({onChange, value}: Props) {
         flushSync(() => {
             setEditing(true);
         });
+        console.log(ref.current);
         ref.current?.select();
     };
 
@@ -37,5 +46,16 @@ export default function EditableText({onChange, value}: Props) {
         return <button onClick={handleEdit}>{value}</button>;
     }
 
-    return <input type="text" defaultValue={value} onBlur={handleChange} ref={ref} onKeyDown={handleSave} />;
+    const inputProps: InputProps = {
+        defaultValue: value,
+        onBlur: handleChange,
+        onKeyDown: handleSave,
+        ref,
+    };
+
+    if (children) {
+        return children(inputProps);
+    }
+
+    return <input type="text" className="text-gray-800 rounded" {...inputProps} />;
 }

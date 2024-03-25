@@ -4,6 +4,7 @@ import EditableText from './EditableText.tsx';
 import {clsx} from 'clsx';
 import {BugAntIcon, ChevronDownIcon, ChevronUpIcon, UserIcon, XMarkIcon} from '@heroicons/react/24/solid';
 import ModifyHealth from './ModifyHealth.tsx';
+import InitiativeInput from './InitiativeInput.tsx';
 
 type Props = {
     character: Character;
@@ -11,12 +12,13 @@ type Props = {
 };
 
 export function CharacterRow({character, encounterId}: Props) {
-    const {deleteCharacter, hpChanges, renameCharacter, updateInitiative} = useApp(
+    const {deleteCharacter, encounterStarted, hpChanges, renameCharacter, updateInitiative} = useApp(
         ({deleteCharacter, encounters, renameCharacter, updateInitiative}) => ({
             deleteCharacter,
             renameCharacter,
             updateInitiative,
             hpChanges: encounters[encounterId].hpChanges.filter((hpChange) => hpChange.characterId === character.id),
+            encounterStarted: encounters[encounterId].turn !== undefined,
         }),
     );
     const [showHistory, setShowHistory] = useState<boolean>(false);
@@ -45,14 +47,16 @@ export function CharacterRow({character, encounterId}: Props) {
                     className={clsx(
                         'flex flex-col p-2',
                         showHistory ? 'rounded-tl-lg' : 'rounded-l-lg',
-                        character.takingTurn ? 'bg-primary' : 'bg-gray-200',
+                        character.takingTurn ? 'bg-primary text-white' : 'bg-gray-200',
                     )}
                 >
                     <span>Initiative</span>
                     <EditableText
                         value={character.initiative.toString()}
                         onChange={(value) => updateInitiative(encounterId, character.id, parseInt(value))}
-                    />
+                    >
+                        {(props) => <InitiativeInput {...props} />}
+                    </EditableText>
                 </div>
                 <div className="place-self-center px-4 flex">
                     <button className="group" onClick={handleDelete} type="button">
@@ -71,7 +75,7 @@ export function CharacterRow({character, encounterId}: Props) {
                             character.takingTurn ? 'border-primary' : 'border-gray-200',
                         )}
                     >
-                        <div className="relative">
+                        <div className="flex relative h-full items-center">
                             <span>
                                 <abbr title={character.hp.toString()}>{currentHp}</abbr> HP
                             </span>
@@ -96,7 +100,7 @@ export function CharacterRow({character, encounterId}: Props) {
                                 </div>
                             )}
                         </div>
-                        <ModifyHealth characterId={character.id} encounterId={encounterId} />
+                        {encounterStarted && <ModifyHealth characterId={character.id} encounterId={encounterId} />}
                     </div>
                 )}
                 {hpChanges.length > 0 && (

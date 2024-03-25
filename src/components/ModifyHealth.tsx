@@ -21,21 +21,21 @@ export default function ModifyHealth({characterId, encounterId}: Props) {
                 id={`character-hp-${characterId}`}
                 name={`character-hp-${characterId}`}
                 type="number"
-                className="w-20 rounded-l border border-gray-500 bg-gray-100"
+                className="w-20 rounded-l border border-gray-300 bg-gray-100"
                 step={1}
                 min={1}
                 value={amount}
                 onChange={(e) => setAmount(e.currentTarget.value)}
             />
             <button
-                className="p-2 border-y border-gray-500 bg-gray-100 hover:opacity-80"
+                className="p-2 border-y border-gray-300 bg-gray-100 hover:opacity-80"
                 type="button"
                 onClick={() => handleModify()}
             >
                 Heal
             </button>
             <button
-                className="p-2 border border-gray-500 bg-gray-100 hover:opacity-80 rounded-r"
+                className="p-2 border border-gray-300 bg-gray-100 hover:opacity-80 rounded-r"
                 type="button"
                 onClick={() => handleModify(-1)}
             >

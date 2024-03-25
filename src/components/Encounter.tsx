@@ -15,7 +15,13 @@ export default function EncounterView({encounter}: Props) {
 
             <div className="flex flex-col gap-y-4 mb-4">
                 {encounter.characters.map((character) => {
-                    return <CharacterRow character={character} encounterId={encounter.id} key={character.id} />;
+                    return (
+                        <CharacterRow
+                            character={character}
+                            encounterId={encounter.id}
+                            key={`${encounter.id}-${character.id}`}
+                        />
+                    );
                 })}
             </div>
 

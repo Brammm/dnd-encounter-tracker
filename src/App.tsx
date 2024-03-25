@@ -16,15 +16,17 @@ export default function App() {
             <h1 className="text-3xl font-bold mb-6">⚔️ DND Encounter tracker</h1>
             <div>
                 <nav className={'border-b gap-x-4 flex'}>
-                    {Object.values(encounters).map((encounter) => (
-                        <Tab
-                            active={activeEncounterId === encounter.id}
-                            key={`nav-${encounter.id}`}
-                            onClick={() => setActiveEncounterId(encounter.id)}
-                        >
-                            {encounter.name}
-                        </Tab>
-                    ))}
+                    <div className="flex gap-x-4 max-w-4xl overflow-x-auto">
+                        {Object.values(encounters).map((encounter) => (
+                            <Tab
+                                active={activeEncounterId === encounter.id}
+                                key={`nav-${encounter.id}`}
+                                onClick={() => setActiveEncounterId(encounter.id)}
+                            >
+                                {encounter.name}
+                            </Tab>
+                        ))}
+                    </div>
 
                     <Button onClick={() => addEncounter()} size="small">
                         <PlusCircleIcon className="h-5 w-5" />
