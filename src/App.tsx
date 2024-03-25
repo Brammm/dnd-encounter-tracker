@@ -26,7 +26,7 @@ export default function App() {
                         </Tab>
                     ))}
 
-                    <Button onClick={() => addEncounter()}>
+                    <Button onClick={() => addEncounter()} size="small">
                         <PlusCircleIcon className="h-5 w-5" />
                         Add
                     </Button>
