@@ -1,6 +1,7 @@
 import {Combobox} from '@headlessui/react';
 import {useState} from 'react';
 import data from '../data/combined.json';
+import {defaultClassName} from './Input.tsx';
 
 export type CharacterData = {custom: boolean; name: string; hp: {average: string; formula: string}};
 
@@ -20,6 +21,7 @@ export default function NameComboBox({onChange, value}: Props) {
         <Combobox value={value} onChange={onChange}>
             <div className="relative">
                 <Combobox.Input
+                    className={defaultClassName}
                     onChange={(e) => setQuery(e.target.value)}
                     displayValue={(char: CharacterData) => char.name}
                 />

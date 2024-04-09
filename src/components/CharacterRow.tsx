@@ -59,8 +59,8 @@ export function CharacterRow({character, encounterId}: Props) {
                         {(props) => <InitiativeInput {...props} />}
                     </EditableText>
                 </div>
-                <div className="place-self-center px-4 flex">
-                    <button className="group" onClick={handleDelete} type="button">
+                <div className="group place-self-center px-4 flex">
+                    <button onClick={handleDelete} type="button">
                         <CharacterIcon className="h-4 mr-2 text-gray-400 place-self-center group-hover:hidden" />
                         <XMarkIcon className="h-4 mr-2 text-gray-400 place-self-center hidden group-hover:inline-block" />
                     </button>
