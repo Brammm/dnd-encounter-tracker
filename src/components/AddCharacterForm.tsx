@@ -6,14 +6,22 @@ import InitiativeInput from './InitiativeInput.tsx';
 import HpInput from './HpInput.tsx';
 import NameComboBox, {CharacterData} from './NameComboBox.tsx';
 import Input from './Input.tsx';
+import {calculateMaximum} from '../util/calculator.ts';
 
 type CharacterType = 'PC' | 'NPC';
+type HpType = 'AVERAGE' | 'FORMULA';
 
 type Props = {
     onAdd: (type: CharacterType, name: string, initiative: number, hp?: number) => void;
 };
 
-type FormState = {type: CharacterType; name: string; hp: string; initiative: string; settings: {multiplier: number}};
+type FormState = {
+    type: CharacterType;
+    name: string;
+    hp: string;
+    initiative: string;
+    settings: {multiplier: number; hpType: HpType};
+};
 
 export default function AddCharacterForm({onAdd}: Props) {
     const [state, setState] = useState<FormState>({
@@ -23,6 +31,7 @@ export default function AddCharacterForm({onAdd}: Props) {
         initiative: '',
         settings: {
             multiplier: 1,
+            hpType: 'AVERAGE',
         },
     });
 
@@ -51,7 +60,10 @@ export default function AddCharacterForm({onAdd}: Props) {
         setState((prevState) => {
             prevState.name = data.name;
             if (!data.custom) {
-                prevState.hp = Math.floor(parseInt(data.hp.average) * state.settings.multiplier).toString();
+                const baseHp =
+                    state.settings.hpType === 'AVERAGE' ? parseInt(data.hp.average) : calculateMaximum(data.hp.formula);
+
+                prevState.hp = Math.floor(baseHp * state.settings.multiplier).toString();
             }
 
             return {...prevState};
@@ -102,7 +114,35 @@ export default function AddCharacterForm({onAdd}: Props) {
                     <Button submit>Add</Button>
                 </div>
             </div>
-            <div>
+            <div className={'flex gap-x-4 my-6'}>
+                <p className="flex flex-col justify-end">
+                    <RadioButton
+                        checked={state.settings.hpType === 'AVERAGE'}
+                        id="hp-type-AVERAGE"
+                        label="Average"
+                        name="hp-type"
+                        value="AVERAGE"
+                        onChange={(value) =>
+                            setState((prevState) => ({
+                                ...prevState,
+                                settings: {...prevState.settings, hpType: value as 'AVERAGE' | 'FORMULA'},
+                            }))
+                        }
+                    />
+                    <RadioButton
+                        checked={state.settings.hpType === 'FORMULA'}
+                        id="hp-type-FORMULA"
+                        label="Max formula"
+                        name="hp-type"
+                        value="FORMULA"
+                        onChange={(value) =>
+                            setState((prevState) => ({
+                                ...prevState,
+                                settings: {...prevState.settings, hpType: value as 'AVERAGE' | 'FORMULA'},
+                            }))
+                        }
+                    />
+                </p>
                 <InputGroup id="multiplier" label="Multiplier">
                     <Input
                         type="number"
