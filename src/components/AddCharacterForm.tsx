@@ -1,37 +1,32 @@
-import {FormEvent} from 'react';
+import {FormEvent, useState} from 'react';
 import Button from './Button.tsx';
 import RadioButton from './RadioButton.tsx';
 import InputGroup from './InputGroup.tsx';
-import Input from './Input.tsx';
 import InitiativeInput from './InitiativeInput.tsx';
 import HpInput from './HpInput.tsx';
+import NameComboBox, {CharacterData} from './NameComboBox.tsx';
 
 type Props = {
     onAdd: (type: 'PC' | 'NPC', name: string, initiative: number, hp?: number) => void;
 };
 
-interface FormElements extends HTMLFormControlsCollection {
-    'type-PC': HTMLInputElement;
-    'type-NPC': HTMLInputElement;
-    name: HTMLInputElement;
-    initiative: HTMLInputElement;
-    hp: HTMLInputElement;
-}
-interface AddPlayerFormElement extends HTMLFormElement {
-    readonly elements: FormElements;
-}
-
 export default function AddCharacterForm({onAdd}: Props) {
-    function handleSubmit(e: FormEvent<AddPlayerFormElement>) {
-        e.preventDefault();
-        const elements = e.currentTarget.elements;
+    const [state, setState] = useState<{type: 'PC' | 'NPC'; name: string; hp: string; initiative: string}>({
+        type: 'NPC',
+        name: '',
+        hp: '',
+        initiative: '',
+    });
 
-        let initiative = parseInt(elements.initiative.value);
+    function handleSubmit(e: FormEvent) {
+        e.preventDefault();
+
+        let initiative = parseInt(state.initiative);
         if (isNaN(initiative)) {
             initiative = 0;
         }
 
-        let hp: number | string | undefined = elements.hp.value;
+        let hp: number | string | undefined = state.hp;
         if (!hp) {
             hp = undefined;
         } else {
@@ -41,23 +36,58 @@ export default function AddCharacterForm({onAdd}: Props) {
             }
         }
 
-        onAdd(elements['type-PC'].checked ? 'PC' : 'NPC', elements.name.value, initiative, hp);
+        onAdd(state.type, state.name, initiative, hp);
+    }
+
+    function handleCharacterSelect(data: CharacterData) {
+        setState((prevState) => {
+            prevState.name = data.name;
+            if (!data.custom) {
+                prevState.hp = data.hp.average;
+            }
+
+            return {...prevState};
+        });
     }
 
     return (
         <form onSubmit={handleSubmit} className={'flex gap-x-4 my-6'}>
             <p className="flex flex-col justify-end">
-                <RadioButton id="type-PC" label="PC" name="type" value="PC" />
-                <RadioButton id="type-NPC" label="NPC" name="type" value="NPC" />
+                <RadioButton
+                    checked={state.type === 'NPC'}
+                    id="type-NPC"
+                    label="NPC"
+                    name="type"
+                    value="NPC"
+                    onChange={(value) => setState((prevState) => ({...prevState, type: value as 'PC' | 'NPC'}))}
+                />
+                <RadioButton
+                    checked={state.type === 'PC'}
+                    id="type-PC"
+                    label="PC"
+                    name="type"
+                    value="PC"
+                    onChange={(value) => setState((prevState) => ({...prevState, type: value as 'PC' | 'NPC'}))}
+                />
             </p>
             <InputGroup id="name" label="Name">
-                <Input name="name" />
+                <NameComboBox
+                    onChange={handleCharacterSelect}
+                    value={{name: state.name, hp: {average: '', formula: ''}, custom: false}}
+                />
             </InputGroup>
             <InputGroup id="hp" label="HP">
-                <HpInput name="hp" />
+                <HpInput
+                    name="hp"
+                    value={state.hp}
+                    onChange={(value) => setState((prevState) => ({...prevState, hp: value}))}
+                />
             </InputGroup>
             <InputGroup id="initiative" label="Initiative">
-                <InitiativeInput name="initiative" />
+                <InitiativeInput
+                    name="initiative"
+                    onChange={(value) => setState((prevState) => ({...prevState, initiative: value}))}
+                />
             </InputGroup>
             <div className="flex flex-col justify-end">
                 <Button submit>Add</Button>

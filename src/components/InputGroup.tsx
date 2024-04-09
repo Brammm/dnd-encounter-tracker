@@ -12,9 +12,9 @@ export default function InputGroup({children, id, label}: Props) {
     const input = React.cloneElement(children, {id});
 
     return (
-        <p className="flex flex-col">
+        <div className="flex flex-col">
             <Label htmlFor={id}>{label}</Label>
             {input}
-        </p>
+        </div>
     );
 }
