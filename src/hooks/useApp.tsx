@@ -37,6 +37,7 @@ type State = {
 
 type Actions = {
     addEncounter: () => void;
+    deleteEncounter: (encounterId: EncounterId) => void;
     addCharacter: (encounterId: EncounterId, character: Omit<Character, 'id' | 'takingTurn'>) => void;
     deleteCharacter: (encounterId: EncounterId, characterId: CharacterId) => void;
     renameCharacter: (encounterId: EncounterId, characterId: CharacterId, name: string) => void;
@@ -68,6 +69,11 @@ const useApp = create<State & Actions>()(
                         characters: [],
                         hpChanges: [],
                     };
+                });
+            },
+            deleteEncounter: (encounterId) => {
+                set((state) => {
+                    delete state.encounters[encounterId];
                 });
             },
             addCharacter: (encounterId, character) => {

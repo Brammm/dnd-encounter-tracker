@@ -22,7 +22,6 @@ export default function EditableText({children, onChange, value}: Props) {
         flushSync(() => {
             setEditing(true);
         });
-        console.log(ref.current);
         ref.current?.select();
     };
 
