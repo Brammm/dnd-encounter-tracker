@@ -7,7 +7,7 @@ type Props = {
 };
 
 export default function EncounterView({encounter}: Props) {
-    const {nextCharacter, resetEncounter, sortOnInitiative, startEncounter} = useApp();
+    const {deleteEncounter, nextCharacter, resetEncounter, sortOnInitiative, startEncounter} = useApp();
 
     return (
         <div className="mt-4">
@@ -24,6 +24,15 @@ export default function EncounterView({encounter}: Props) {
                         <Button onClick={() => startEncounter(encounter.id)}>Start encounter</Button>
                     )}
                     <Button onClick={() => sortOnInitiative(encounter.id)}>Sort on initiative</Button>
+                    <Button
+                        onClick={() => {
+                            if (confirm('Are you sure?')) {
+                                deleteEncounter(encounter.id);
+                            }
+                        }}
+                    >
+                        Delete encounter
+                    </Button>
                 </div>
             )}
 
