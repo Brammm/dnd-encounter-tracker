@@ -13,7 +13,15 @@ export default function App() {
 
     return (
         <div className="max-w-screen-md mx-auto">
-            <h1 className="text-3xl font-bold mb-6">⚔️ DND Encounter tracker</h1>
+            <h1 className="text-3xl font-bold my-6">
+                ⚔️ DND Encounter tracker
+                <small className="text-sm ml-2 text-gray-500 font-normal">
+                    by{' '}
+                    <a className="text-primary hover:underline" href="https://github.com/Brammm/dnd-encounter-tracker">
+                        Brammm
+                    </a>
+                </small>
+            </h1>
             <div>
                 <nav className={'border-b gap-x-4 flex'}>
                     <div className="flex gap-x-4 max-w-4xl overflow-x-auto">
