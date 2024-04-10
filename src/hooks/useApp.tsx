@@ -14,12 +14,11 @@ export type Character = {
     initiative: number;
     hp?: number;
     takingTurn: boolean;
+    hpChanges: HpChange[];
 };
 
 export type HpChange = {
-    characterId: CharacterId;
     amount: number;
-    changedHp: number;
     turn: number;
 };
 
@@ -27,7 +26,6 @@ export type Encounter = {
     id: EncounterId;
     name: string;
     characters: Character[];
-    hpChanges: HpChange[];
     turn?: number;
 };
 
@@ -40,10 +38,12 @@ type State = {
 };
 
 type Actions = {
+    reset: () => void;
+    updateSettings: (multiplier: number, hpType: State['settings']['hpType']) => void;
     addEncounter: () => string;
     deleteEncounter: (encounterId: EncounterId) => void;
     renameEncounter: (encounterId: EncounterId, name: string) => void;
-    addCharacter: (encounterId: EncounterId, character: Omit<Character, 'id' | 'takingTurn'>) => void;
+    addCharacter: (encounterId: EncounterId, character: Pick<Character, 'type' | 'name' | 'hp' | 'initiative'>) => void;
     deleteCharacter: (encounterId: EncounterId, characterId: CharacterId) => void;
     renameCharacter: (encounterId: EncounterId, characterId: CharacterId, name: string) => void;
     modifyHp: (encounterId: EncounterId, characterId: CharacterId, amount: number) => void;
@@ -52,7 +52,6 @@ type Actions = {
     startEncounter: (encounterId: EncounterId) => void;
     nextCharacter: (encounterId: EncounterId) => void;
     resetEncounter: (encounterId: EncounterId) => void;
-    reset: () => void;
 };
 
 const defaultState: State = {
@@ -61,7 +60,6 @@ const defaultState: State = {
             id: '1',
             name: 'Encounter 1',
             characters: [],
-            hpChanges: [],
         },
     },
     settings: {
@@ -77,6 +75,11 @@ const useApp = create<State & Actions>()(
             reset: () => {
                 set(defaultState);
             },
+            updateSettings: (multiplier, hpType) => {
+                set({
+                    settings: {multiplier, hpType},
+                });
+            },
             addEncounter: () => {
                 const nextId = ulid();
                 set((state) => {
@@ -84,7 +87,6 @@ const useApp = create<State & Actions>()(
                         id: nextId,
                         name: 'Encounter ' + (Object.values(state.encounters).length + 1).toString(),
                         characters: [],
-                        hpChanges: [],
                     };
                 });
 
@@ -106,6 +108,7 @@ const useApp = create<State & Actions>()(
                         ...character,
                         id: ulid(),
                         takingTurn: false,
+                        hpChanges: [],
                     });
                 });
             },
@@ -113,9 +116,6 @@ const useApp = create<State & Actions>()(
                 set((state) => {
                     state.encounters[encounterId].characters = state.encounters[encounterId].characters.filter(
                         (character) => character.id !== characterId,
-                    );
-                    state.encounters[encounterId].hpChanges = state.encounters[encounterId].hpChanges.filter(
-                        (change) => change.characterId !== characterId,
                     );
                 });
             },
@@ -137,17 +137,12 @@ const useApp = create<State & Actions>()(
                     const character = encounters[encounterId].characters.find(
                         (character) => character.id === characterId,
                     );
+
                     if (!character || !character.hp) {
                         throw new Error('Cannot modify character HP');
                     }
-                    const hpChanges = encounters[encounterId].hpChanges;
 
-                    const changedHp = Math.max(
-                        0,
-                        Math.min(character.hp, (hpChanges.at(-1)?.changedHp || character.hp) + amount),
-                    );
-
-                    hpChanges.push({characterId, amount, changedHp, turn: encounters[encounterId].turn || 1});
+                    character.hpChanges.push({amount, turn: encounters[encounterId].turn || 1});
                 });
             },
             updateInitiative: (encounterId, characterId, initiative) => {
@@ -200,15 +195,15 @@ const useApp = create<State & Actions>()(
             },
             resetEncounter: (encounterId) => {
                 set(({encounters}) => {
-                    encounters[encounterId].hpChanges = [];
                     encounters[encounterId].turn = undefined;
                     encounters[encounterId].characters.forEach((character) => {
                         character.takingTurn = false;
+                        character.hpChanges = [];
                     });
                 });
             },
         })),
-        {name: 'dnd-encounter-tracker'},
+        {name: 'dnd-encounter-tracker', version: 1},
     ),
 );
 

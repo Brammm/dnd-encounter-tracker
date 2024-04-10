@@ -7,9 +7,9 @@ import HpInput from '../HpInput.tsx';
 import NameComboBox, {CharacterData} from '../NameComboBox.tsx';
 import Input from '../Input.tsx';
 import {calculateMaximum} from '../../util/calculator.ts';
+import useApp from '../../hooks/useApp.tsx';
 
 type CharacterType = 'PC' | 'NPC';
-type HpType = 'AVERAGE' | 'FORMULA';
 
 type Props = {
     onAdd: (type: CharacterType, name: string, initiative: number, hp?: number) => void;
@@ -20,19 +20,15 @@ type FormState = {
     name: string;
     hp: string;
     initiative: string;
-    settings: {multiplier: number; hpType: HpType};
 };
 
 export default function AddCharacterForm({onAdd}: Props) {
+    const {settings, updateSettings} = useApp();
     const [state, setState] = useState<FormState>({
         type: 'NPC',
         name: '',
         hp: '',
         initiative: '',
-        settings: {
-            multiplier: 1,
-            hpType: 'AVERAGE',
-        },
     });
 
     function handleSubmit(e: FormEvent) {
@@ -61,9 +57,9 @@ export default function AddCharacterForm({onAdd}: Props) {
             prevState.name = data.name;
             if (!data.custom) {
                 const baseHp =
-                    state.settings.hpType === 'AVERAGE' ? parseInt(data.hp.average) : calculateMaximum(data.hp.formula);
+                    settings.hpType === 'AVERAGE' ? parseInt(data.hp.average) : calculateMaximum(data.hp.formula);
 
-                prevState.hp = Math.floor(baseHp * state.settings.multiplier).toString();
+                prevState.hp = Math.floor(baseHp * settings.multiplier).toString();
             }
 
             return {...prevState};
@@ -117,44 +113,29 @@ export default function AddCharacterForm({onAdd}: Props) {
             <div className={'flex gap-x-4 my-6'}>
                 <p className="flex flex-col justify-end">
                     <RadioButton
-                        checked={state.settings.hpType === 'AVERAGE'}
+                        checked={settings.hpType === 'AVERAGE'}
                         id="hp-type-AVERAGE"
                         label="Average"
                         name="hp-type"
                         value="AVERAGE"
-                        onChange={(value) =>
-                            setState((prevState) => ({
-                                ...prevState,
-                                settings: {...prevState.settings, hpType: value as 'AVERAGE' | 'FORMULA'},
-                            }))
-                        }
+                        onChange={(value) => updateSettings(settings.multiplier, value as 'AVERAGE' | 'FORMULA')}
                     />
                     <RadioButton
-                        checked={state.settings.hpType === 'FORMULA'}
+                        checked={settings.hpType === 'FORMULA'}
                         id="hp-type-FORMULA"
                         label="Max formula"
                         name="hp-type"
                         value="FORMULA"
-                        onChange={(value) =>
-                            setState((prevState) => ({
-                                ...prevState,
-                                settings: {...prevState.settings, hpType: value as 'AVERAGE' | 'FORMULA'},
-                            }))
-                        }
+                        onChange={(value) => updateSettings(settings.multiplier, value as 'AVERAGE' | 'FORMULA')}
                     />
                 </p>
                 <InputGroup id="multiplier" label="Multiplier">
                     <Input
                         type="number"
                         name="multiplier"
-                        onChange={(value) =>
-                            setState((prevState) => ({
-                                ...prevState,
-                                settings: {...prevState.settings, multiplier: parseFloat(value)},
-                            }))
-                        }
+                        onChange={(value) => updateSettings(parseFloat(value), settings.hpType)}
                         step={0.1}
-                        value={state.settings.multiplier.toString()}
+                        value={settings.multiplier.toString()}
                     />
                 </InputGroup>
             </div>

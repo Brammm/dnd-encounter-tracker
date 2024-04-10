@@ -6,6 +6,7 @@ import {BugAntIcon, ChevronDownIcon, ChevronUpIcon, UserIcon, XMarkIcon} from '@
 import ModifyHealth from './ModifyHealth.tsx';
 import InitiativeInput from '../InitiativeInput.tsx';
 import HpHistory from './HpHistory.tsx';
+import calculateCurrentHp from '../../util/currentHp.ts';
 
 type Props = {
     character: Character;
@@ -13,18 +14,17 @@ type Props = {
 };
 
 export function CharacterRow({character, encounterId}: Props) {
-    const {deleteCharacter, encounterStarted, hpChanges, renameCharacter, updateInitiative} = useApp(
+    const {deleteCharacter, encounterStarted, renameCharacter, updateInitiative} = useApp(
         ({deleteCharacter, encounters, renameCharacter, updateInitiative}) => ({
             deleteCharacter,
             renameCharacter,
             updateInitiative,
-            hpChanges: encounters[encounterId].hpChanges.filter((hpChange) => hpChange.characterId === character.id),
             encounterStarted: encounters[encounterId].turn !== undefined,
         }),
     );
     const [showHistory, setShowHistory] = useState<boolean>(false);
 
-    const currentHp = hpChanges.length > 0 ? hpChanges.at(-1)!.changedHp : character.hp;
+    const currentHp = calculateCurrentHp(character);
 
     let hpPercentage: number | undefined;
     if (character.hp !== undefined && currentHp !== undefined) {
@@ -104,7 +104,7 @@ export function CharacterRow({character, encounterId}: Props) {
                         {encounterStarted && <ModifyHealth characterId={character.id} encounterId={encounterId} />}
                     </div>
                 )}
-                {hpChanges.length > 0 && (
+                {character.hpChanges.length > 0 && (
                     <div className="flex ml-auto place-items-center border-l px-2">
                         <button onClick={() => setShowHistory(!showHistory)}>
                             {showHistory ? <ChevronUpIcon className="h-4" /> : <ChevronDownIcon className="h-4" />}
@@ -114,7 +114,7 @@ export function CharacterRow({character, encounterId}: Props) {
             </div>
             {showHistory && (
                 <div className={clsx('border-t p-4', character.takingTurn ? 'border-primary' : 'border-gray-200')}>
-                    <HpHistory hpChanges={hpChanges} />
+                    <HpHistory hpChanges={character.hpChanges} />
                 </div>
             )}
         </div>

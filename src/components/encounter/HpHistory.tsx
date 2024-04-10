@@ -16,13 +16,12 @@ export default function HpHistory({hpChanges}: Props) {
                         )}
                         <div className="relative flex space-x-3">
                             <div>
-                                <span className="h-6 w-6 rounded-full bg-gray-300 flex items-center justify-center ring-8 ring-white text-white">
+                                <span className="h-6 w-6 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-gray-100 text-white">
                                     {change.turn}
                                 </span>
                             </div>
                             <p className="text-sm text-gray-800 pt-0.5">
-                                {change.amount > 0 ? 'Healed' : 'Damaged'} {change.amount}HP{' '}
-                                <small>({change.changedHp}HP)</small>
+                                {change.amount > 0 ? 'Healed' : 'Damaged'} {change.amount}HP
                             </p>
                         </div>
                     </div>
