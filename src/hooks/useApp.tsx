@@ -36,7 +36,7 @@ type State = {
 };
 
 type Actions = {
-    addEncounter: () => void;
+    addEncounter: () => string;
     deleteEncounter: (encounterId: EncounterId) => void;
     addCharacter: (encounterId: EncounterId, character: Omit<Character, 'id' | 'takingTurn'>) => void;
     deleteCharacter: (encounterId: EncounterId, characterId: CharacterId) => void;
@@ -69,8 +69,8 @@ const useApp = create<State & Actions>()(
                 set(defaultState);
             },
             addEncounter: () => {
+                const nextId = ulid();
                 set((state) => {
-                    const nextId = ulid();
                     state.encounters[nextId] = {
                         id: nextId,
                         name: 'Encounter ' + (Object.values(state.encounters).length + 1).toString(),
@@ -78,6 +78,8 @@ const useApp = create<State & Actions>()(
                         hpChanges: [],
                     };
                 });
+
+                return nextId;
             },
             deleteEncounter: (encounterId) => {
                 set((state) => {

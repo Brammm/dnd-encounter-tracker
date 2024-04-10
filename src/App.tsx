@@ -18,6 +18,11 @@ export default function App() {
         }
     };
 
+    const handleAddEncounter = () => {
+        const id = addEncounter();
+        setActiveEncounterId(id);
+    };
+
     return (
         <div className="w-screen h-screen flex">
             <nav className={'w-64 bg-dark flex flex-col justify-between p-4 overflow-y-auto'}>
@@ -34,7 +39,7 @@ export default function App() {
                             </NavItem>
                         ))}
                     </div>
-                    <Button onClick={() => addEncounter()} size="small">
+                    <Button onClick={handleAddEncounter} size="small">
                         <PlusCircleIcon className="h-5 w-5" />
                         Add encounter
                     </Button>
