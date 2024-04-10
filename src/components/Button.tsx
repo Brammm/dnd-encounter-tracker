@@ -12,7 +12,7 @@ export default function Button({children, onClick, size = 'normal', submit}: Pro
     return (
         <button
             className={clsx(
-                'border border-primary h-min inline-flex items-center bg-primary rounded gap-x-1.5 text-white hover:opacity-70',
+                'border border-primary h-min inline-flex items-center bg-primary rounded gap-x-1.5 text-white hover:bg-highlight hover:border-highlight',
                 size === 'normal' ? 'px-3 py-2' : 'px-2 py-0.5',
             )}
             type={submit ? 'submit' : 'button'}

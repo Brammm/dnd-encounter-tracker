@@ -7,14 +7,12 @@ type Props = {
     onClick: () => void;
 };
 
-export default function Tab({active = false, children, onClick}: Props) {
+export default function NavItem({active = false, children, onClick}: Props) {
     return (
         <button
             className={clsx(
-                'p-2 min-w-fit',
-                active
-                    ? 'border-b-2 border-primary text-primary'
-                    : 'border-b-2 border-transparent hover:border-b-2 hover:border-gray-200',
+                'w-full text-left px-4 py-1 rounded',
+                active ? 'bg-highlight text-white' : 'text-highlight hover:bg-primary hover:text-white',
             )}
             onClick={onClick}
         >
