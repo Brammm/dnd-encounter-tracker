@@ -1,19 +1,33 @@
 import {ReactNode} from 'react';
 import {clsx} from 'clsx';
 
+type Size = 'normal' | 'small';
+type Impact = 'primary' | 'secondary';
+
 type Props = {
     children: ReactNode;
     onClick?: () => void;
     submit?: boolean;
-    size?: 'small' | 'normal';
+    size?: Size;
+    impact?: Impact;
 };
 
-export default function Button({children, onClick, size = 'normal', submit}: Props) {
+const sizeClasses: Record<Size, string> = {
+    normal: 'px-3 py-2',
+    small: 'px-2 py-0.5',
+};
+const impactClasses: Record<Impact, string> = {
+    primary: 'border border-primary bg-primary hover:bg-highlight hover:border-highlight',
+    secondary: 'border border-accent bg-accent hover:opacity-80',
+};
+
+export default function Button({children, impact = 'primary', onClick, size = 'normal', submit}: Props) {
     return (
         <button
             className={clsx(
-                'border border-primary h-min inline-flex items-center bg-primary rounded gap-x-1.5 text-white hover:bg-highlight hover:border-highlight',
-                size === 'normal' ? 'px-3 py-2' : 'px-2 py-0.5',
+                'h-min inline-flex items-center rounded gap-x-1.5 text-white ',
+                sizeClasses[size],
+                impactClasses[impact],
             )}
             type={submit ? 'submit' : 'button'}
             onClick={!submit && onClick ? onClick : undefined}

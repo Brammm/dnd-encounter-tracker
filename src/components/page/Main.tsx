@@ -13,14 +13,14 @@ export default function Main({encounter}: Props) {
     return (
         <main className="bg-gray-100 h-full w-full flex flex-col">
             <Header encounter={encounter} />
-            <div className="bg-gray-100 border-t border-gray-200 p-8">
+            <div className="bg-gray-100 border-t border-gray-200">
+                <EncounterView encounter={encounter} />
+                <hr />
                 <AddCharacterForm
                     onAdd={(type, name, initiative, hp) => {
                         addCharacter(encounter.id, {type, name, initiative, hp});
                     }}
                 />
-                <hr />
-                <EncounterView encounter={encounter} />
             </div>
         </main>
     );

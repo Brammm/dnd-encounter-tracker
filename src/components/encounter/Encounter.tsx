@@ -1,6 +1,7 @@
 import {CharacterRow} from './CharacterRow.tsx';
 import useApp, {Encounter} from '../../hooks/useApp.tsx';
 import Button from '../Button.tsx';
+import {ArrowDownIcon, ArrowUturnLeftIcon, ForwardIcon, PlayIcon, TrashIcon} from '@heroicons/react/16/solid';
 
 type Props = {
     encounter: Encounter;
@@ -10,42 +11,58 @@ export default function EncounterView({encounter}: Props) {
     const {deleteEncounter, nextCharacter, resetEncounter, sortOnInitiative, startEncounter} = useApp();
 
     return (
-        <div className="mt-4">
-            {encounter.turn && <h2 className="text-xl font-bold text-gray-700 my-4">Turn {encounter.turn}</h2>}
-
+        <div>
             {encounter.characters.length > 0 && (
-                <div className="flex gap-x-4 mb-4">
+                <div className="flex gap-x-4 mb-4 bg-gray-200 p-4">
+                    <Button impact="secondary" size="small" onClick={() => sortOnInitiative(encounter.id)}>
+                        <ArrowDownIcon className="h-4" />
+                        Sort on initiative
+                    </Button>
                     {encounter.turn ? (
                         <>
-                            <Button onClick={() => nextCharacter(encounter.id)}>Next character</Button>
-                            <Button onClick={() => resetEncounter(encounter.id)}>Reset encounter</Button>
+                            <Button impact="secondary" size="small" onClick={() => nextCharacter(encounter.id)}>
+                                <ForwardIcon className="h-4" />
+                                Next character
+                            </Button>
+                            <Button impact="secondary" size="small" onClick={() => resetEncounter(encounter.id)}>
+                                <ArrowUturnLeftIcon className="h-4" />
+                                Reset encounter
+                            </Button>
                         </>
                     ) : (
-                        <Button onClick={() => startEncounter(encounter.id)}>Start encounter</Button>
+                        <Button impact="secondary" size="small" onClick={() => startEncounter(encounter.id)}>
+                            <PlayIcon className="h-4" />
+                            Start encounter
+                        </Button>
                     )}
-                    <Button onClick={() => sortOnInitiative(encounter.id)}>Sort on initiative</Button>
                     <Button
+                        impact="secondary"
+                        size="small"
                         onClick={() => {
                             if (confirm('Are you sure?')) {
                                 deleteEncounter(encounter.id);
                             }
                         }}
                     >
+                        <TrashIcon className="h-4" />
                         Delete encounter
                     </Button>
                 </div>
             )}
 
-            <div className="flex flex-col gap-y-4">
-                {encounter.characters.map((character) => {
-                    return (
-                        <CharacterRow
-                            character={character}
-                            encounterId={encounter.id}
-                            key={`${encounter.id}-${character.id}`}
-                        />
-                    );
-                })}
+            <div className="p-4 flex flex-col w-fit">
+                {encounter.turn && <h2 className="text-xl font-bold text-gray-700 mb-4">Turn {encounter.turn}</h2>}
+                <div className="flex flex-col gap-y-4">
+                    {encounter.characters.map((character) => {
+                        return (
+                            <CharacterRow
+                                character={character}
+                                encounterId={encounter.id}
+                                key={`${encounter.id}-${character.id}`}
+                            />
+                        );
+                    })}
+                </div>
             </div>
         </div>
     );

@@ -33,6 +33,10 @@ export type Encounter = {
 
 type State = {
     encounters: Record<EncounterId, Encounter>;
+    settings: {
+        multiplier: number;
+        hpType: 'AVERAGE' | 'FORMULA';
+    };
 };
 
 type Actions = {
@@ -51,7 +55,7 @@ type Actions = {
     reset: () => void;
 };
 
-const defaultState = {
+const defaultState: State = {
     encounters: {
         '1': {
             id: '1',
@@ -59,6 +63,10 @@ const defaultState = {
             characters: [],
             hpChanges: [],
         },
+    },
+    settings: {
+        multiplier: 1,
+        hpType: 'AVERAGE',
     },
 };
 
