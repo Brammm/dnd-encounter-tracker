@@ -1,4 +1,4 @@
-import {HpChange} from '../hooks/useApp.tsx';
+import {HpChange} from '../../hooks/useApp.tsx';
 
 type Props = {hpChanges: HpChange[]};
 

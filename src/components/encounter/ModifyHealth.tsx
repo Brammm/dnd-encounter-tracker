@@ -1,4 +1,4 @@
-import useApp, {CharacterId, EncounterId} from '../hooks/useApp.tsx';
+import useApp, {CharacterId, EncounterId} from '../../hooks/useApp.tsx';
 import {useState} from 'react';
 
 type Props = {

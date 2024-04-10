@@ -1,12 +1,12 @@
 import {FormEvent, useState} from 'react';
-import Button from './Button.tsx';
-import RadioButton from './RadioButton.tsx';
-import InputGroup from './InputGroup.tsx';
-import InitiativeInput from './InitiativeInput.tsx';
-import HpInput from './HpInput.tsx';
-import NameComboBox, {CharacterData} from './NameComboBox.tsx';
-import Input from './Input.tsx';
-import {calculateMaximum} from '../util/calculator.ts';
+import Button from '../Button.tsx';
+import RadioButton from '../RadioButton.tsx';
+import InputGroup from '../InputGroup.tsx';
+import InitiativeInput from '../InitiativeInput.tsx';
+import HpInput from '../HpInput.tsx';
+import NameComboBox, {CharacterData} from '../NameComboBox.tsx';
+import Input from '../Input.tsx';
+import {calculateMaximum} from '../../util/calculator.ts';
 
 type CharacterType = 'PC' | 'NPC';
 type HpType = 'AVERAGE' | 'FORMULA';

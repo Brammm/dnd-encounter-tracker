@@ -1,6 +1,6 @@
-import {CharacterRow} from './CharacterRow';
-import useApp, {Encounter} from '../hooks/useApp';
-import Button from './Button.tsx';
+import {CharacterRow} from './CharacterRow.tsx';
+import useApp, {Encounter} from '../../hooks/useApp.tsx';
+import Button from '../Button.tsx';
 
 type Props = {
     encounter: Encounter;

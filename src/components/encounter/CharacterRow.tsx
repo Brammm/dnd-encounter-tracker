@@ -1,10 +1,10 @@
-import useApp, {Character} from '../hooks/useApp';
+import useApp, {Character} from '../../hooks/useApp.tsx';
 import {useState} from 'react';
-import EditableText from './EditableText.tsx';
+import EditableText from '../EditableText.tsx';
 import {clsx} from 'clsx';
 import {BugAntIcon, ChevronDownIcon, ChevronUpIcon, UserIcon, XMarkIcon} from '@heroicons/react/24/solid';
 import ModifyHealth from './ModifyHealth.tsx';
-import InitiativeInput from './InitiativeInput.tsx';
+import InitiativeInput from '../InitiativeInput.tsx';
 import HpHistory from './HpHistory.tsx';
 
 type Props = {
