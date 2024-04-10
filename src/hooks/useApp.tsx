@@ -47,18 +47,26 @@ type Actions = {
     startEncounter: (encounterId: EncounterId) => void;
     nextCharacter: (encounterId: EncounterId) => void;
     resetEncounter: (encounterId: EncounterId) => void;
+    reset: () => void;
+};
+
+const defaultState = {
+    encounters: {
+        '1': {
+            id: '1',
+            name: 'Encounter 1',
+            characters: [],
+            hpChanges: [],
+        },
+    },
 };
 
 const useApp = create<State & Actions>()(
     persist(
         immer((set, get) => ({
-            encounters: {
-                '1': {
-                    id: '1',
-                    name: 'Encounter 1',
-                    characters: [],
-                    hpChanges: [],
-                },
+            ...defaultState,
+            reset: () => {
+                set(defaultState);
             },
             addEncounter: () => {
                 set((state) => {

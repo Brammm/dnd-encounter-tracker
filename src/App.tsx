@@ -7,9 +7,15 @@ import Tab from './components/Tab.tsx';
 import Button from './components/Button.tsx';
 
 export default function App() {
-    const {addCharacter, addEncounter, encounters} = useApp();
+    const {addCharacter, addEncounter, encounters, reset} = useApp();
     const [activeEncounterId, setActiveEncounterId] = useState<string>(Object.keys(encounters)[0]);
     const activeEncounter = encounters[activeEncounterId];
+
+    const handleReset = () => {
+        if (confirm('Are you sure? This will wipe everything.')) {
+            reset();
+        }
+    };
 
     return (
         <div className="max-w-screen-md mx-auto">
@@ -51,6 +57,9 @@ export default function App() {
                     <hr />
                     <EncounterView encounter={activeEncounter} />
                 </main>
+                <footer>
+                    <Button onClick={handleReset}>Reset everything</Button>
+                </footer>
             </div>
         </div>
     );
