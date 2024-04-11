@@ -1,14 +1,22 @@
 import {CharacterRow} from './CharacterRow.tsx';
 import useApp, {Encounter} from '../../hooks/useApp.tsx';
 import Button from '../Button.tsx';
-import {ArrowDownIcon, ArrowUturnLeftIcon, ForwardIcon, PlayIcon, TrashIcon} from '@heroicons/react/16/solid';
+import {
+    ArrowDownIcon,
+    ArrowUturnLeftIcon,
+    DocumentDuplicateIcon,
+    ForwardIcon,
+    PlayIcon,
+    TrashIcon,
+} from '@heroicons/react/16/solid';
 
 type Props = {
     encounter: Encounter;
 };
 
 export default function EncounterView({encounter}: Props) {
-    const {deleteEncounter, nextCharacter, resetEncounter, sortOnInitiative, startEncounter} = useApp();
+    const {deleteEncounter, duplicateEncounter, nextCharacter, resetEncounter, sortOnInitiative, startEncounter} =
+        useApp();
 
     return (
         <div>
@@ -35,6 +43,16 @@ export default function EncounterView({encounter}: Props) {
                             Start encounter
                         </Button>
                     )}
+                    <Button
+                        impact="secondary"
+                        size="small"
+                        onClick={() => {
+                            duplicateEncounter(encounter.id);
+                        }}
+                    >
+                        <DocumentDuplicateIcon className="h-4" />
+                        Duplicate encounter
+                    </Button>
                     <Button
                         impact="secondary"
                         size="small"

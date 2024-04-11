@@ -41,6 +41,7 @@ type Actions = {
     reset: () => void;
     updateSettings: (multiplier: number, hpType: State['settings']['hpType']) => void;
     addEncounter: () => string;
+    duplicateEncounter: (encounterId: EncounterId) => string;
     deleteEncounter: (encounterId: EncounterId) => void;
     renameEncounter: (encounterId: EncounterId, name: string) => void;
     addCharacter: (encounterId: EncounterId, character: Pick<Character, 'type' | 'name' | 'hp' | 'initiative'>) => void;
@@ -87,6 +88,21 @@ const useApp = create<State & Actions>()(
                         id: nextId,
                         name: 'Encounter ' + (Object.values(state.encounters).length + 1).toString(),
                         characters: [],
+                    };
+                });
+
+                return nextId;
+            },
+            duplicateEncounter: (encounterId) => {
+                const nextId = ulid();
+
+                const characters = get().encounters[encounterId].characters.map((char) => ({...char, hpChanges: []}));
+
+                set((state) => {
+                    state.encounters[nextId] = {
+                        id: nextId,
+                        name: 'Encounter ' + (Object.values(state.encounters).length + 1).toString(),
+                        characters,
                     };
                 });
 
