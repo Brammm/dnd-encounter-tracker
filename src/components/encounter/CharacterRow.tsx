@@ -41,6 +41,15 @@ export function CharacterRow({character, encounterId}: Props) {
         deleteCharacter(encounterId, character.id);
     };
 
+    const handleRename = (value: string) => {
+        if (!value) {
+            alert('Name cant be empty!');
+            return;
+        }
+
+        renameCharacter(encounterId, character.id, value);
+    };
+
     return (
         <div className={clsx('border rounded-lg', character.takingTurn ? 'border-primary' : 'border-gray-200')}>
             <div className={clsx('flex')}>
@@ -64,10 +73,7 @@ export function CharacterRow({character, encounterId}: Props) {
                         <CharacterIcon className="h-4 mr-2 text-gray-400 place-self-center group-hover:hidden" />
                         <XMarkIcon className="h-4 mr-2 text-gray-400 place-self-center hidden group-hover:inline-block" />
                     </button>
-                    <EditableText
-                        value={character.name}
-                        onChange={(value) => renameCharacter(encounterId, character.id, value)}
-                    />
+                    <EditableText value={character.name} onChange={handleRename} />
                 </div>
                 {character.hp !== undefined && (
                     <div

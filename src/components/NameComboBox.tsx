@@ -26,7 +26,7 @@ export default function NameComboBox({onChange, value}: Props) {
                     displayValue={(char: CharacterData) => char.name}
                 />
                 <Combobox.Options className="absolute mt-1 bg-white rounded py-4 z-10 w-full shadow-xl">
-                    {query.length && (
+                    {query.length > 0 && (
                         <Combobox.Option
                             value={{name: query, hp: '', custom: true}}
                             className={({active}) => `py-2 px-4 ${active && 'bg-primary text-white'}`}

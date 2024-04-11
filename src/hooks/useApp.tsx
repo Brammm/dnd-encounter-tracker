@@ -103,6 +103,10 @@ const useApp = create<State & Actions>()(
                 });
             },
             addCharacter: (encounterId, character) => {
+                if (!character.name) {
+                    return;
+                }
+
                 set((state) => {
                     state.encounters[encounterId].characters.push({
                         ...character,
@@ -120,6 +124,10 @@ const useApp = create<State & Actions>()(
                 });
             },
             renameCharacter: (encounterId, characterId, name) => {
+                if (!name) {
+                    return;
+                }
+
                 set((state) => {
                     state.encounters[encounterId].characters = state.encounters[encounterId].characters.map(
                         (character) => {

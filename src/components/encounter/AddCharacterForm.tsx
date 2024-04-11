@@ -34,6 +34,11 @@ export default function AddCharacterForm({onAdd}: Props) {
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
 
+        if (state.name === '') {
+            alert('Name cant be empty!');
+            return;
+        }
+
         let initiative = parseInt(state.initiative);
         if (isNaN(initiative)) {
             initiative = 0;
