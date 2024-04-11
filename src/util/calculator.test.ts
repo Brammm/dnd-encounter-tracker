@@ -1,4 +1,3 @@
-import {describe, expect, it} from 'vitest';
 import {calculateMaximum} from './calculator.ts';
 
 const dataProvider: [string, number][] = [
