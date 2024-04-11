@@ -29,7 +29,7 @@ export type Encounter = {
     turn?: number;
 };
 
-type State = {
+export type State = {
     activeEncounterId: EncounterId;
     encounters: Record<EncounterId, Encounter>;
     settings: {

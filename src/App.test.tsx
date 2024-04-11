@@ -2,8 +2,11 @@ import {act, render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import App from './App';
+import useApp, {State} from './hooks/useApp.tsx';
 
-describe.sequential('App', () => {
+const user = userEvent.setup();
+
+describe('App', () => {
     test('Should render with one initial encounter', async () => {
         renderApp();
 
@@ -12,7 +15,6 @@ describe.sequential('App', () => {
     });
 
     test('Adds and immediately selects a new encounter', async () => {
-        const user = userEvent.setup();
         renderApp();
 
         await act(async () => {
@@ -22,6 +24,27 @@ describe.sequential('App', () => {
         expect(await screen.findByRole('button', {name: /encounter 2/i})).toBeInTheDocument();
         expect(await screen.findByRole('heading', {name: /encounter 2/i})).toBeInTheDocument();
     });
+
+    test('Allows navigating to other encounter', async () => {
+        renderApp({
+            activeEncounterId: 'foo',
+            encounters: {
+                foo: {name: 'Foo', characters: [], id: 'foo'},
+                bar: {name: 'Bar', characters: [], id: 'bar'},
+            },
+        });
+
+        expect(await screen.findByRole('heading', {name: /foo/i})).toBeInTheDocument();
+        await act(async () => {
+            await user.click(await screen.findByRole('button', {name: /bar/i}));
+        });
+        expect(await screen.findByRole('heading', {name: /bar/i})).toBeInTheDocument();
+    });
 });
 
-const renderApp = () => render(<App />);
+const renderApp = (initialState?: Partial<State>) => {
+    render(<App />);
+    if (initialState) {
+        act(() => useApp.setState(initialState));
+    }
+};
