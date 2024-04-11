@@ -1,5 +1,4 @@
 import useApp from './hooks/useApp.tsx';
-import {useState} from 'react';
 import {PlusCircleIcon, TrashIcon} from '@heroicons/react/24/solid';
 import NavItem from './components/page/NavItem.tsx';
 import Button from './components/Button.tsx';
@@ -8,8 +7,7 @@ import Footer from './components/page/Footer.tsx';
 import Main from './components/page/Main.tsx';
 
 export default function App() {
-    const {addEncounter, encounters, reset} = useApp();
-    const [activeEncounterId, setActiveEncounterId] = useState<string>(Object.keys(encounters)[0]);
+    const {activeEncounterId, addEncounter, encounters, reset, selectActiveEncounter} = useApp();
     const activeEncounter = encounters[activeEncounterId];
 
     const handleReset = () => {
@@ -19,8 +17,7 @@ export default function App() {
     };
 
     const handleAddEncounter = () => {
-        const id = addEncounter();
-        setActiveEncounterId(id);
+        addEncounter();
     };
 
     return (
@@ -33,7 +30,7 @@ export default function App() {
                             <NavItem
                                 active={activeEncounterId === encounter.id}
                                 key={`nav-${encounter.id}`}
-                                onClick={() => setActiveEncounterId(encounter.id)}
+                                onClick={() => selectActiveEncounter(encounter.id)}
                             >
                                 {encounter.name}
                             </NavItem>

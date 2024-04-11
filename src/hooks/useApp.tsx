@@ -30,6 +30,7 @@ export type Encounter = {
 };
 
 type State = {
+    activeEncounterId: EncounterId;
     encounters: Record<EncounterId, Encounter>;
     settings: {
         multiplier: number;
@@ -38,10 +39,10 @@ type State = {
 };
 
 type Actions = {
-    reset: () => void;
+    selectActiveEncounter: (encounterId: EncounterId) => void;
     updateSettings: (multiplier: number, hpType: State['settings']['hpType']) => void;
-    addEncounter: () => string;
-    duplicateEncounter: (encounterId: EncounterId) => string;
+    addEncounter: () => void;
+    duplicateEncounter: (encounterId: EncounterId) => void;
     deleteEncounter: (encounterId: EncounterId) => void;
     renameEncounter: (encounterId: EncounterId, name: string) => void;
     addCharacter: (encounterId: EncounterId, character: Pick<Character, 'type' | 'name' | 'hp' | 'initiative'>) => void;
@@ -53,12 +54,14 @@ type Actions = {
     startEncounter: (encounterId: EncounterId) => void;
     nextCharacter: (encounterId: EncounterId) => void;
     resetEncounter: (encounterId: EncounterId) => void;
+    reset: () => void;
 };
 
 const defaultState: State = {
+    activeEncounterId: '11b7ef78-073e-485e-9984-5e287eb361cc',
     encounters: {
-        '1': {
-            id: '1',
+        '11b7ef78-073e-485e-9984-5e287eb361cc': {
+            id: '11b7ef78-073e-485e-9984-5e287eb361cc',
             name: 'Encounter 1',
             characters: [],
         },
@@ -73,8 +76,14 @@ const useApp = create<State & Actions>()(
     persist(
         immer((set, get) => ({
             ...defaultState,
-            reset: () => {
-                set(defaultState);
+            selectActiveEncounter: (encounterId) => {
+                set((state) => {
+                    if (!(encounterId in get().encounters)) {
+                        return;
+                    }
+
+                    state.activeEncounterId = encounterId;
+                });
             },
             updateSettings: (multiplier, hpType) => {
                 set({
@@ -89,9 +98,8 @@ const useApp = create<State & Actions>()(
                         name: 'Encounter ' + (Object.values(state.encounters).length + 1).toString(),
                         characters: [],
                     };
+                    state.activeEncounterId = nextId;
                 });
-
-                return nextId;
             },
             duplicateEncounter: (encounterId) => {
                 const nextId = ulid();
@@ -104,13 +112,19 @@ const useApp = create<State & Actions>()(
                         name: 'Encounter ' + (Object.values(state.encounters).length + 1).toString(),
                         characters,
                     };
+                    state.activeEncounterId = nextId;
                 });
-
-                return nextId;
             },
             deleteEncounter: (encounterId) => {
                 set((state) => {
                     delete state.encounters[encounterId];
+                    if (Object.values(state.encounters).length === 0) {
+                        state.encounters = defaultState.encounters;
+                    }
+                    if (encounterId === state.activeEncounterId) {
+                        console.log('test');
+                        state.activeEncounterId = Object.keys(state.encounters)[0];
+                    }
                 });
             },
             renameEncounter: (encounterId, name) => {
@@ -226,8 +240,11 @@ const useApp = create<State & Actions>()(
                     });
                 });
             },
+            reset: () => {
+                set(defaultState);
+            },
         })),
-        {name: 'dnd-encounter-tracker', version: 1},
+        {name: 'dnd-encounter-tracker', version: 2},
     ),
 );
 
