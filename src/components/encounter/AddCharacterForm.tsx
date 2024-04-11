@@ -73,7 +73,8 @@ export default function AddCharacterForm({onAdd}: Props) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className={'flex gap-x-4 my-6'}>
+            <h2 className="text-xl font-serif mb-2">Add character</h2>
+            <div className={'flex gap-x-4'}>
                 <p className="flex flex-col justify-end">
                     <RadioButton
                         checked={state.type === 'NPC'}
@@ -115,7 +116,8 @@ export default function AddCharacterForm({onAdd}: Props) {
                     <Button submit>Add</Button>
                 </div>
             </div>
-            <div className={'flex gap-x-4 my-6'}>
+            <h2 className="text-xl font-serif mt-8 mb-2">Settings</h2>
+            <div className={'flex gap-x-4'}>
                 <p className="flex flex-col justify-end">
                     <RadioButton
                         checked={settings.hpType === 'AVERAGE'}
