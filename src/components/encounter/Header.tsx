@@ -29,11 +29,11 @@ export default function Header({encounter}: Props) {
         setEditingEncounterName(false);
     };
     return (
-        <header className="p-4 bg-gray-100">
+        <header className="py-4">
             {editingEncounterName ? (
                 <form className="flex items-center" onSubmit={handleFinishEncounterRename}>
                     <input
-                        className="bg-gray-100 border-0 text-3xl font-bold font-serif p-0 focus:ring-0"
+                        className="border-0 text-3xl font-bold font-serif p-0 focus:ring-0"
                         ref={encounterNameRef}
                         value={newEncounterName}
                         onChange={(e) => setNewEncounterName(e.currentTarget.value)}

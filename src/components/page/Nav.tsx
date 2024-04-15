@@ -19,8 +19,9 @@ export default function Nav({}: Props) {
     const handleAddEncounter = () => {
         addEncounter();
     };
+
     return (
-        <nav className={'bg-dark flex flex-col justify-between p-4 overflow-y-auto h-full'}>
+        <nav className="flex grow flex-col gap-y-5 overflow-y-auto bg-dark p-4 justify-between">
             <div className="flex flex-col items-start gap-y-4">
                 <Logo />
                 <div className="flex flex-col gap-y-2 w-full">

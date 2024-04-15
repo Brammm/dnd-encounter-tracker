@@ -73,68 +73,77 @@ export default function AddCharacterForm({onAdd}: Props) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className={'flex gap-x-4'}>
-                <p className="flex flex-col justify-end">
-                    <RadioButton
-                        checked={state.type === 'NPC'}
-                        id="type-NPC"
-                        label="NPC"
-                        name="type"
-                        value="NPC"
-                        onChange={(value) => setState((prevState) => ({...prevState, type: value as 'PC' | 'NPC'}))}
-                    />
-                    <RadioButton
-                        checked={state.type === 'PC'}
-                        id="type-PC"
-                        label="PC"
-                        name="type"
-                        value="PC"
-                        onChange={(value) => setState((prevState) => ({...prevState, type: value as 'PC' | 'NPC'}))}
-                    />
-                </p>
+            <div className="flex flex-col gap-4">
+                <div>
+                    <p>Character type</p>
+                    <p className="flex flex-col justify-end">
+                        <RadioButton
+                            checked={state.type === 'NPC'}
+                            id="type-NPC"
+                            label="NPC"
+                            name="type"
+                            value="NPC"
+                            onChange={(value) => setState((prevState) => ({...prevState, type: value as 'PC' | 'NPC'}))}
+                        />
+                        <RadioButton
+                            checked={state.type === 'PC'}
+                            id="type-PC"
+                            label="PC"
+                            name="type"
+                            value="PC"
+                            onChange={(value) => setState((prevState) => ({...prevState, type: value as 'PC' | 'NPC'}))}
+                        />
+                    </p>
+                </div>
                 <InputGroup id="name" label="Name">
                     <NameComboBox
                         onChange={handleCharacterSelect}
                         value={{name: state.name, hp: {average: '', formula: ''}, custom: false}}
                     />
                 </InputGroup>
-                <InputGroup id="hp" label="HP">
-                    <HpInput
-                        name="hp"
-                        value={state.hp}
-                        onChange={(value) => setState((prevState) => ({...prevState, hp: value}))}
-                    />
-                </InputGroup>
-                <InputGroup id="initiative" label="Initiative">
-                    <InitiativeInput
-                        name="initiative"
-                        onChange={(value) => setState((prevState) => ({...prevState, initiative: value}))}
-                    />
-                </InputGroup>
-                <div className="flex flex-col justify-end">
+                <div className="flex gap-x-4">
+                    <InputGroup id="hp" label="HP">
+                        <HpInput
+                            name="hp"
+                            value={state.hp}
+                            onChange={(value) => setState((prevState) => ({...prevState, hp: value}))}
+                        />
+                    </InputGroup>
+                    <InputGroup id="initiative" label="Initiative">
+                        <InitiativeInput
+                            name="initiative"
+                            onChange={(value) => setState((prevState) => ({...prevState, initiative: value}))}
+                        />
+                    </InputGroup>
+                </div>
+                <div>
                     <Button submit>Add</Button>
                 </div>
             </div>
-            <h2 className="text-xl font-serif mt-8 mb-2">Settings</h2>
-            <div className={'flex gap-x-4'}>
-                <p className="flex flex-col justify-end">
-                    <RadioButton
-                        checked={settings.hpType === 'AVERAGE'}
-                        id="hp-type-AVERAGE"
-                        label="Average"
-                        name="hp-type"
-                        value="AVERAGE"
-                        onChange={(value) => updateSettings(settings.multiplier, value as 'AVERAGE' | 'FORMULA')}
-                    />
-                    <RadioButton
-                        checked={settings.hpType === 'FORMULA'}
-                        id="hp-type-FORMULA"
-                        label="Max formula"
-                        name="hp-type"
-                        value="FORMULA"
-                        onChange={(value) => updateSettings(settings.multiplier, value as 'AVERAGE' | 'FORMULA')}
-                    />
-                </p>
+            <hr className="my-8" />
+            <h2 className="text-xl font-serif mb-2">Settings</h2>
+            <div className={'flex flex-col gap-4'}>
+                <div>
+                    <p>Set HP to:</p>
+                    <p className="flex flex-col justify-end">
+                        <RadioButton
+                            checked={settings.hpType === 'AVERAGE'}
+                            id="hp-type-AVERAGE"
+                            label="Average"
+                            name="hp-type"
+                            value="AVERAGE"
+                            onChange={(value) => updateSettings(settings.multiplier, value as 'AVERAGE' | 'FORMULA')}
+                        />
+                        <RadioButton
+                            checked={settings.hpType === 'FORMULA'}
+                            id="hp-type-FORMULA"
+                            label="Max of formula (e.g. 2d4 = 8)"
+                            name="hp-type"
+                            value="FORMULA"
+                            onChange={(value) => updateSettings(settings.multiplier, value as 'AVERAGE' | 'FORMULA')}
+                        />
+                    </p>
+                </div>
                 <InputGroup id="multiplier" label="Multiplier">
                     <Input
                         type="number"

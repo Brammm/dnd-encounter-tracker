@@ -8,7 +8,7 @@ type Props = {
 export default function Characters({encounter}: Props) {
     return (
         <div>
-            <div className="p-6 flex flex-col w-fit">
+            <div className="p-8 flex flex-col w-fit">
                 {encounter.characters.length > 0 ? (
                     <>
                         <h2 className="text-xl font-bold text-gray-700 mb-4">Turn: {encounter.turn || 0}</h2>

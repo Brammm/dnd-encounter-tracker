@@ -1,7 +1,6 @@
 import useApp, {Encounter} from '../../hooks/useApp.tsx';
 import AddCharacterForm from '../encounter/AddCharacterForm.tsx';
 import Characters from '../encounter/Characters.tsx';
-import Header from '../encounter/Header.tsx';
 import {Fragment, useState} from 'react';
 import Button from '../Button.tsx';
 import {
@@ -12,8 +11,8 @@ import {
     PlayIcon,
     PlusCircleIcon,
     TrashIcon,
+    XMarkIcon,
 } from '@heroicons/react/16/solid';
-import {XMarkIcon} from '@heroicons/react/24/solid';
 import {Dialog, Transition} from '@headlessui/react';
 
 type Props = {
@@ -34,7 +33,7 @@ export default function Main({encounter}: Props) {
     const [showAddCharacterForm, setShowAddCharacterForm] = useState(false);
 
     return (
-        <main className="bg-gray-100 h-full flex flex-col">
+        <main>
             <Transition.Root show={showAddCharacterForm} as={Fragment}>
                 <Dialog as="div" className="relative z-10" onClose={setShowAddCharacterForm}>
                     <Transition.Child
@@ -97,9 +96,7 @@ export default function Main({encounter}: Props) {
                 </Dialog>
             </Transition.Root>
 
-            <Header encounter={encounter} />
-
-            <div className="flex gap-x-4 bg-gray-200 px-6 py-4">
+            <div className="flex gap-x-4 bg-gray-200 px-8 py-4 shadow-sm">
                 <Button
                     disabled={showAddCharacterForm}
                     impact="secondary"
@@ -125,13 +122,13 @@ export default function Main({encounter}: Props) {
                                 </Button>
                                 <Button impact="secondary" size="small" onClick={() => resetEncounter(encounter.id)}>
                                     <ArrowUturnLeftIcon className="h-4" />
-                                    Reset encounter
+                                    Reset
                                 </Button>
                             </>
                         ) : (
                             <Button impact="secondary" size="small" onClick={() => startEncounter(encounter.id)}>
                                 <PlayIcon className="h-4" />
-                                Start encounter
+                                Start
                             </Button>
                         )}
                         <Button
@@ -142,7 +139,7 @@ export default function Main({encounter}: Props) {
                             }}
                         >
                             <DocumentDuplicateIcon className="h-4" />
-                            Duplicate encounter
+                            Duplicate
                         </Button>
                     </>
                 )}
@@ -156,7 +153,7 @@ export default function Main({encounter}: Props) {
                     }}
                 >
                     <TrashIcon className="h-4" />
-                    Delete encounter
+                    Delete
                 </Button>
             </div>
 

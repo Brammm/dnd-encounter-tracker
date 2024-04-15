@@ -10,7 +10,7 @@ export type InputProps = {
     step?: number;
 };
 
-export const defaultClassName = 'border-gray-500 rounded';
+export const defaultClassName = 'border-gray-400 shadow-sm rounded w-full';
 
 export default function Input({id, name, onChange, step = 1, type = 'text', value}: InputProps) {
     const extraProps: React.InputHTMLAttributes<HTMLInputElement> = type === 'number' ? {step, min: 0} : {};
