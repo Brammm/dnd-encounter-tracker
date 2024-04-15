@@ -128,12 +128,16 @@ const useApp = create<State & Actions>()(
                 });
             },
             renameEncounter: (encounterId, name) => {
+                if (!name) {
+                    return;
+                }
+
                 set((state) => {
                     state.encounters[encounterId].name = name;
                 });
             },
             addCharacter: (encounterId, character) => {
-                if (!character.name) {
+                if (!character.name.trim()) {
                     return;
                 }
 
@@ -154,7 +158,7 @@ const useApp = create<State & Actions>()(
                 });
             },
             renameCharacter: (encounterId, characterId, name) => {
-                if (!name) {
+                if (!name.trim()) {
                     return;
                 }
 

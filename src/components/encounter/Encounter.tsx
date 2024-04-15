@@ -71,9 +71,9 @@ export default function EncounterView({encounter}: Props) {
             </div>
 
             <div className="p-6 flex flex-col w-fit">
-                {encounter.turn ? (
+                {encounter.characters.length > 0 ? (
                     <>
-                        <h2 className="text-xl font-bold text-gray-700 mb-4">Turn {encounter.turn}</h2>
+                        <h2 className="text-xl font-bold text-gray-700 mb-4">Turn: {encounter.turn || 0}</h2>
                         <div className="flex flex-col gap-y-4">
                             {encounter.characters.map((character) => {
                                 return (

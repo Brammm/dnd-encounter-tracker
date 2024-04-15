@@ -21,6 +21,10 @@ export default function Header({encounter}: Props) {
     };
 
     const handleFinishEncounterRename = () => {
+        if (!newEncounterName.trim()) {
+            alert('Encounter name cant be empty');
+        }
+
         renameEncounter(encounter.id, newEncounterName);
         setEditingEncounterName(false);
     };

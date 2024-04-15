@@ -42,12 +42,12 @@ export function CharacterRow({character, encounterId}: Props) {
     };
 
     const handleRename = (value: string) => {
-        if (!value) {
+        if (!value.trim()) {
             alert('Name cant be empty!');
             return;
         }
 
-        renameCharacter(encounterId, character.id, value);
+        renameCharacter(encounterId, character.id, value.trim());
     };
 
     return (

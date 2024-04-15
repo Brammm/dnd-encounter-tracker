@@ -34,7 +34,7 @@ export default function AddCharacterForm({onAdd}: Props) {
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
 
-        if (state.name === '') {
+        if (state.name.trim() === '') {
             alert('Name cant be empty!');
             return;
         }
@@ -54,7 +54,7 @@ export default function AddCharacterForm({onAdd}: Props) {
             }
         }
 
-        onAdd(state.type, state.name, initiative, hp);
+        onAdd(state.type, state.name.trim(), initiative, hp);
     }
 
     function handleCharacterSelect(data: CharacterData) {
