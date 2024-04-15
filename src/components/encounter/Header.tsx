@@ -33,7 +33,7 @@ export default function Header({encounter}: Props) {
             {editingEncounterName ? (
                 <form className="flex items-center" onSubmit={handleFinishEncounterRename}>
                     <input
-                        className="bg-gray-100 border-0 text-3xl font-bold font-serif p-0 outline-0"
+                        className="bg-gray-100 border-0 text-3xl font-bold font-serif p-0 focus:ring-0"
                         ref={encounterNameRef}
                         value={newEncounterName}
                         onChange={(e) => setNewEncounterName(e.currentTarget.value)}

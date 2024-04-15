@@ -73,7 +73,6 @@ export default function AddCharacterForm({onAdd}: Props) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <h2 className="text-xl font-serif mb-2">Add character</h2>
             <div className={'flex gap-x-4'}>
                 <p className="flex flex-col justify-end">
                     <RadioButton

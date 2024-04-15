@@ -6,10 +6,11 @@ type Impact = 'primary' | 'secondary';
 
 type Props = {
     children: ReactNode;
-    onClick?: () => void;
-    submit?: boolean;
-    size?: Size;
+    disabled?: boolean;
     impact?: Impact;
+    onClick?: () => void;
+    size?: Size;
+    submit?: boolean;
 };
 
 const sizeClasses: Record<Size, string> = {
@@ -18,10 +19,17 @@ const sizeClasses: Record<Size, string> = {
 };
 const impactClasses: Record<Impact, string> = {
     primary: 'border border-primary bg-primary hover:bg-highlight hover:border-highlight',
-    secondary: 'border border-accent bg-accent hover:opacity-80',
+    secondary: 'border border-accent bg-accent hover:opacity-80 disabled:opacity-80',
 };
 
-export default function Button({children, impact = 'primary', onClick, size = 'normal', submit}: Props) {
+export default function Button({
+    children,
+    disabled = false,
+    impact = 'primary',
+    onClick,
+    size = 'normal',
+    submit,
+}: Props) {
     return (
         <button
             className={clsx(
@@ -29,6 +37,7 @@ export default function Button({children, impact = 'primary', onClick, size = 'n
                 sizeClasses[size],
                 impactClasses[impact],
             )}
+            disabled={disabled}
             type={submit ? 'submit' : 'button'}
             onClick={!submit && onClick ? onClick : undefined}
         >
