@@ -15,6 +15,7 @@ export default function NavItem({active = false, children, onClick}: Props) {
                 active ? 'bg-highlight text-white' : 'text-highlight hover:bg-primary hover:text-white',
             )}
             onClick={onClick}
+            aria-current={active ? 'page' : undefined}
         >
             {children}
         </button>
