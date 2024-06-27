@@ -1,4 +1,4 @@
-import {FormEvent, useState} from 'react';
+import {FormEvent, useEffect, useState} from 'react';
 import Button from '../Button.tsx';
 import RadioButton from '../RadioButton.tsx';
 import InputGroup from '../InputGroup.tsx';
@@ -34,6 +34,7 @@ const initialState: FormState = {
 export default function AddCharacterForm({onAdd}: Props) {
     const {settings, updateSettings} = useApp();
     const [state, setState] = useState<FormState>(initialState);
+    const [selectedCharacter, setSelectedCharacter] = useState<CharacterData | undefined>(undefined);
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
@@ -62,19 +63,25 @@ export default function AddCharacterForm({onAdd}: Props) {
         setState(initialState);
     }
 
-    function handleCharacterSelect(data: CharacterData) {
+    useEffect(() => {
+        if (!selectedCharacter) {
+            return;
+        }
+
         setState((prevState) => {
-            prevState.name = data.name;
-            if (!data.custom && data.hp) {
+            prevState.name = selectedCharacter.name;
+            if (!selectedCharacter.custom && selectedCharacter.hp) {
                 const baseHp =
-                    settings.hpType === 'AVERAGE' ? parseInt(data.hp.average) : calculateMaximum(data.hp.formula);
+                    settings.hpType === 'AVERAGE'
+                        ? parseInt(selectedCharacter.hp.average)
+                        : calculateMaximum(selectedCharacter.hp.formula);
 
                 prevState.hp = Math.floor(baseHp * settings.multiplier).toString();
             }
 
             return {...prevState};
         });
-    }
+    }, [selectedCharacter, settings]);
 
     return (
         <form onSubmit={handleSubmit}>
@@ -102,7 +109,7 @@ export default function AddCharacterForm({onAdd}: Props) {
                 </div>
                 <InputGroup id="name" label="Name">
                     <NameComboBox
-                        onChange={handleCharacterSelect}
+                        onChange={setSelectedCharacter}
                         value={{name: state.name, hp: {average: '', formula: ''}, custom: false}}
                     />
                 </InputGroup>
