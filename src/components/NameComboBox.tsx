@@ -3,7 +3,7 @@ import {useState} from 'react';
 import data from '../data/combined.json';
 import {defaultClassName} from './Input.tsx';
 
-export type CharacterData = {custom: boolean; name: string; hp: {average: string; formula: string}};
+export type CharacterData = {custom: boolean; name: string; hp: {average: string; formula: string} | null};
 
 type Props = {
     onChange: (character: CharacterData) => void;

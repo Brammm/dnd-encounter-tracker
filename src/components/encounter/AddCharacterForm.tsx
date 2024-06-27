@@ -60,7 +60,7 @@ export default function AddCharacterForm({onAdd}: Props) {
     function handleCharacterSelect(data: CharacterData) {
         setState((prevState) => {
             prevState.name = data.name;
-            if (!data.custom) {
+            if (!data.custom && data.hp) {
                 const baseHp =
                     settings.hpType === 'AVERAGE' ? parseInt(data.hp.average) : calculateMaximum(data.hp.formula);
 
