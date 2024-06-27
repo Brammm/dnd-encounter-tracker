@@ -14,12 +14,13 @@ type Props = {
 };
 
 export function CharacterRow({character, encounterId}: Props) {
-    const {deleteCharacter, encounterStarted, renameCharacter, updateInitiative} = useApp(
+    const {activeCharacter, deleteCharacter, encounterStarted, renameCharacter, updateInitiative} = useApp(
         ({deleteCharacter, encounters, renameCharacter, updateInitiative}) => ({
             deleteCharacter,
             renameCharacter,
             updateInitiative,
             encounterStarted: encounters[encounterId].turn !== undefined,
+            activeCharacter: encounters[encounterId].activeCharacter,
         }),
     );
     const [showHistory, setShowHistory] = useState<boolean>(false);
@@ -50,14 +51,16 @@ export function CharacterRow({character, encounterId}: Props) {
         renameCharacter(encounterId, character.id, value.trim());
     };
 
+    const characterIsActive = character.id === activeCharacter;
+
     return (
-        <div className={clsx('border rounded-lg', character.takingTurn ? 'border-primary' : 'border-gray-200')}>
+        <div className={clsx('border rounded-lg', characterIsActive ? 'border-primary' : 'border-gray-200')}>
             <div className={clsx('flex')}>
                 <div
                     className={clsx(
                         'flex flex-col p-2',
                         showHistory ? 'rounded-tl-lg' : 'rounded-l-lg',
-                        character.takingTurn ? 'bg-primary text-white' : 'bg-gray-200',
+                        characterIsActive ? 'bg-primary text-white' : 'bg-gray-200',
                     )}
                 >
                     <span>Initiative</span>
@@ -79,7 +82,7 @@ export function CharacterRow({character, encounterId}: Props) {
                     <div
                         className={clsx(
                             'flex border-l p-2 place-items-center gap-x-4',
-                            character.takingTurn ? 'border-primary' : 'border-gray-200',
+                            characterIsActive ? 'border-primary' : 'border-gray-200',
                         )}
                     >
                         <div className="flex relative h-full items-center">
@@ -119,7 +122,7 @@ export function CharacterRow({character, encounterId}: Props) {
                 )}
             </div>
             {showHistory && (
-                <div className={clsx('border-t p-4', character.takingTurn ? 'border-primary' : 'border-gray-200')}>
+                <div className={clsx('border-t p-4', characterIsActive ? 'border-primary' : 'border-gray-200')}>
                     <HpHistory hpChanges={character.hpChanges} />
                 </div>
             )}

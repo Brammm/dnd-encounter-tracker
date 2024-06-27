@@ -5,9 +5,7 @@ import {PlusCircleIcon, TrashIcon} from '@heroicons/react/24/solid';
 import Footer from './Footer.tsx';
 import useApp from '../../hooks/useApp.tsx';
 
-type Props = {};
-
-export default function Nav({}: Props) {
+export default function Nav() {
     const {activeEncounterId, addEncounter, encounters, reset, selectActiveEncounter} = useApp();
 
     const handleReset = () => {

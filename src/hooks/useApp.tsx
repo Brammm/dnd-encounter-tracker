@@ -3,6 +3,7 @@ import {create} from 'zustand';
 import {immer} from 'zustand/middleware/immer';
 import {persist} from 'zustand/middleware';
 import {ulid} from 'ulid';
+import calculateCurrentHp from '../util/currentHp.ts';
 
 export type EncounterId = string;
 export type CharacterId = string;
@@ -13,7 +14,6 @@ export type Character = {
     name: string;
     initiative: number;
     hp?: number;
-    takingTurn: boolean;
     hpChanges: HpChange[];
 };
 
@@ -27,6 +27,7 @@ export type Encounter = {
     name: string;
     characters: Character[];
     turn?: number;
+    activeCharacter?: string;
 };
 
 export type State = {
@@ -145,7 +146,6 @@ const useApp = create<State & Actions>()(
                     state.encounters[encounterId].characters.push({
                         ...character,
                         id: ulid(),
-                        takingTurn: false,
                         hpChanges: [],
                     });
                 });
@@ -212,25 +212,39 @@ const useApp = create<State & Actions>()(
                 set(({encounters}) => {
                     encounters[encounterId].turn = 1;
                     if (encounters[encounterId].characters[0]) {
-                        encounters[encounterId].characters[0].takingTurn = true;
+                        encounters[encounterId].activeCharacter = encounters[encounterId].characters[0].id;
                     }
                 });
             },
             nextCharacter: (encounterId) => {
-                const characters = get().encounters[encounterId].characters;
-                const characterTakingTurnIndex = characters.findIndex((character) => character.takingTurn);
+                const encounter = get().encounters[encounterId];
 
-                if (characterTakingTurnIndex === -1 || !get().encounters[encounterId].turn) {
+                // Game hasn't started yet, so don't do anything
+                if (!encounter.activeCharacter || !encounter.turn) {
                     return;
                 }
 
-                const nextRoundIndex =
-                    characterTakingTurnIndex === characters.length - 1 ? 0 : characterTakingTurnIndex + 1;
+                const availableCharacters = encounter.characters.filter((character) => {
+                    // Current character is always available
+                    if (character.id === encounter.activeCharacter) {
+                        return true;
+                    }
+
+                    const currentHp = calculateCurrentHp(character);
+
+                    return character.type === 'PC' || (currentHp && currentHp > 0);
+                });
+                const activeCharacterIndex = availableCharacters.findIndex(
+                    (character) => character.id === encounter.activeCharacter,
+                );
+                const nextCharacterIndex =
+                    activeCharacterIndex === availableCharacters.length - 1 ? 0 : activeCharacterIndex + 1;
+
+                const nextCharacter = availableCharacters[nextCharacterIndex];
 
                 set(({encounters}) => {
-                    encounters[encounterId].characters[characterTakingTurnIndex].takingTurn = false;
-                    encounters[encounterId].characters[nextRoundIndex].takingTurn = true;
-                    if (nextRoundIndex === 0) {
+                    encounters[encounterId].activeCharacter = nextCharacter.id;
+                    if (nextCharacterIndex === 0) {
                         encounters[encounterId].turn!++;
                     }
                 });
@@ -238,8 +252,8 @@ const useApp = create<State & Actions>()(
             resetEncounter: (encounterId) => {
                 set(({encounters}) => {
                     encounters[encounterId].turn = undefined;
+                    encounters[encounterId].activeCharacter = undefined;
                     encounters[encounterId].characters.forEach((character) => {
-                        character.takingTurn = false;
                         character.hpChanges = [];
                     });
                 });
