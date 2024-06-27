@@ -46,7 +46,11 @@ type Actions = {
     duplicateEncounter: (encounterId: EncounterId) => void;
     deleteEncounter: (encounterId: EncounterId) => void;
     renameEncounter: (encounterId: EncounterId, name: string) => void;
-    addCharacter: (encounterId: EncounterId, character: Pick<Character, 'type' | 'name' | 'hp' | 'initiative'>) => void;
+    addCharacter: (
+        encounterId: EncounterId,
+        character: Pick<Character, 'type' | 'name' | 'hp' | 'initiative'>,
+        amount: number,
+    ) => void;
     deleteCharacter: (encounterId: EncounterId, characterId: CharacterId) => void;
     renameCharacter: (encounterId: EncounterId, characterId: CharacterId, name: string) => void;
     modifyHp: (encounterId: EncounterId, characterId: CharacterId, amount: number) => void;
@@ -137,17 +141,22 @@ const useApp = create<State & Actions>()(
                     state.encounters[encounterId].name = name;
                 });
             },
-            addCharacter: (encounterId, character) => {
+            addCharacter: (encounterId, character, amount) => {
                 if (!character.name.trim()) {
                     return;
                 }
 
                 set((state) => {
-                    state.encounters[encounterId].characters.push({
-                        ...character,
-                        id: ulid(),
-                        hpChanges: [],
-                    });
+                    for (let i = 1; i <= amount; i++) {
+                        const name = amount > 1 ? character.name + ' ' + i : character.name;
+
+                        state.encounters[encounterId].characters.push({
+                            ...character,
+                            name,
+                            id: ulid(),
+                            hpChanges: [],
+                        });
+                    }
                 });
             },
             deleteCharacter: (encounterId, characterId) => {

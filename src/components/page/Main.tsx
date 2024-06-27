@@ -82,8 +82,12 @@ export default function Main({encounter}: Props) {
                                             </div>
                                             <div className="relative mt-6 flex-1 px-4 sm:px-6">
                                                 <AddCharacterForm
-                                                    onAdd={(type, name, initiative, hp) => {
-                                                        addCharacter(encounter.id, {type, name, initiative, hp});
+                                                    onAdd={(type, amount, name, initiative, hp) => {
+                                                        addCharacter(
+                                                            encounter.id,
+                                                            {type, name, initiative, hp},
+                                                            amount,
+                                                        );
                                                     }}
                                                 />
                                             </div>

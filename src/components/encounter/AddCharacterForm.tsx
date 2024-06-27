@@ -12,7 +12,7 @@ import useApp from '../../hooks/useApp.tsx';
 type CharacterType = 'PC' | 'NPC';
 
 type Props = {
-    onAdd: (type: CharacterType, name: string, initiative: number, hp?: number) => void;
+    onAdd: (type: CharacterType, amount: number, name: string, initiative: number, hp?: number) => void;
 };
 
 type FormState = {
@@ -20,6 +20,7 @@ type FormState = {
     name: string;
     hp: string;
     initiative: string;
+    amount: number;
 };
 
 export default function AddCharacterForm({onAdd}: Props) {
@@ -54,7 +55,7 @@ export default function AddCharacterForm({onAdd}: Props) {
             }
         }
 
-        onAdd(state.type, state.name.trim(), initiative, hp);
+        onAdd(state.type, state.amount, state.name.trim(), initiative, hp);
     }
 
     function handleCharacterSelect(data: CharacterData) {
@@ -118,6 +119,20 @@ export default function AddCharacterForm({onAdd}: Props) {
                 </div>
                 <div>
                     <Button submit>Add</Button>
+                    <div className="w-16">
+                        <Input
+                            name="amount"
+                            type="number"
+                            step={1}
+                            value={state.amount.toString()}
+                            onChange={(value) =>
+                                setState((prevState) => ({
+                                    ...prevState,
+                                    amount: isNaN(parseInt(value)) ? 1 : parseInt(value),
+                                }))
+                            }
+                        />
+                    </div>
                 </div>
             </div>
             <hr className="my-8" />
