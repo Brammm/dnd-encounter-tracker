@@ -108,20 +108,24 @@ export default function AddCharacterForm({onAdd}: Props) {
                 </InputGroup>
                 <div className="flex gap-x-4">
                     <InputGroup id="hp" label="HP">
-                        <HpInput
-                            name="hp"
-                            value={state.hp}
-                            onChange={(value) => setState((prevState) => ({...prevState, hp: value}))}
-                        />
+                        <div className="w-32">
+                            <HpInput
+                                name="hp"
+                                value={state.hp}
+                                onChange={(value) => setState((prevState) => ({...prevState, hp: value}))}
+                            />
+                        </div>
                     </InputGroup>
                     <InputGroup id="initiative" label="Initiative">
-                        <InitiativeInput
-                            name="initiative"
-                            onChange={(value) => setState((prevState) => ({...prevState, initiative: value}))}
-                        />
+                        <div className="w-32">
+                            <InitiativeInput
+                                name="initiative"
+                                onChange={(value) => setState((prevState) => ({...prevState, initiative: value}))}
+                            />
+                        </div>
                     </InputGroup>
                 </div>
-                <div>
+                <div className="flex gap-x-4">
                     <Button submit>Add</Button>
                     <div className="w-16">
                         <Input
@@ -164,13 +168,15 @@ export default function AddCharacterForm({onAdd}: Props) {
                     </p>
                 </div>
                 <InputGroup id="multiplier" label="Multiplier">
-                    <Input
-                        type="number"
-                        name="multiplier"
-                        onChange={(value) => updateSettings(parseFloat(value), settings.hpType)}
-                        step={0.1}
-                        value={settings.multiplier.toString()}
-                    />
+                    <div className="w-20">
+                        <Input
+                            type="number"
+                            name="multiplier"
+                            onChange={(value) => updateSettings(parseFloat(value), settings.hpType)}
+                            step={0.1}
+                            value={settings.multiplier.toString()}
+                        />
+                    </div>
                 </InputGroup>
             </div>
         </form>

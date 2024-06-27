@@ -1,5 +1,4 @@
-import {clsx} from 'clsx';
-import {defaultClassName} from './Input.tsx';
+import {defaultInputClassName} from './Input.tsx';
 import {ChangeEvent} from 'react';
 
 type Props = {
@@ -17,7 +16,7 @@ export default function HpInput({id, name, onChange, value}: Props) {
             id={id}
             name={name}
             type="number"
-            className={clsx(defaultClassName, 'w-20')}
+            className={defaultInputClassName}
             step={1}
             min={1}
             value={value}

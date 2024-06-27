@@ -1,5 +1,4 @@
-import {clsx} from 'clsx';
-import {defaultClassName} from './Input.tsx';
+import {defaultInputClassName} from './Input.tsx';
 import React, {ChangeEvent, forwardRef} from 'react';
 
 type Props = Omit<
@@ -13,10 +12,10 @@ const InitiativeInput = forwardRef<HTMLInputElement, Props>((props, ref) => {
     return (
         <input
             type="number"
-            className={clsx(defaultClassName, 'w-16')}
+            className={defaultInputClassName}
             step={1}
             min={1}
-            max={30}
+            max={60}
             {...props}
             ref={ref}
             onChange={handleChange}

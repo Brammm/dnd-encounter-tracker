@@ -68,7 +68,11 @@ export function CharacterRow({character, encounterId}: Props) {
                         value={character.initiative.toString()}
                         onChange={(value) => updateInitiative(encounterId, character.id, parseInt(value))}
                     >
-                        {(props) => <InitiativeInput {...props} />}
+                        {(props) => (
+                            <div className="w-16">
+                                <InitiativeInput {...props} />
+                            </div>
+                        )}
                     </EditableText>
                 </div>
                 <div className="group place-self-center px-4 flex">
