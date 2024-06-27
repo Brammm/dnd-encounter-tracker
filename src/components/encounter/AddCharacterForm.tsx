@@ -23,14 +23,17 @@ type FormState = {
     amount: number;
 };
 
+const initialState: FormState = {
+    type: 'NPC',
+    name: '',
+    hp: '',
+    initiative: '',
+    amount: 1,
+};
+
 export default function AddCharacterForm({onAdd}: Props) {
     const {settings, updateSettings} = useApp();
-    const [state, setState] = useState<FormState>({
-        type: 'NPC',
-        name: '',
-        hp: '',
-        initiative: '',
-    });
+    const [state, setState] = useState<FormState>(initialState);
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
@@ -56,6 +59,7 @@ export default function AddCharacterForm({onAdd}: Props) {
         }
 
         onAdd(state.type, state.amount, state.name.trim(), initiative, hp);
+        setState(initialState);
     }
 
     function handleCharacterSelect(data: CharacterData) {
