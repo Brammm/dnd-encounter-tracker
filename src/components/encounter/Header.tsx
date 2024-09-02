@@ -1,6 +1,6 @@
 import useApp, {Encounter} from '../../hooks/useApp.tsx';
 import {CheckIcon, PencilIcon} from '@heroicons/react/24/outline';
-import {useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {flushSync} from 'react-dom';
 
 type Props = {
@@ -12,6 +12,10 @@ export default function Header({encounter}: Props) {
     const encounterNameRef = useRef<HTMLInputElement>(null);
     const [editingEncounterName, setEditingEncounterName] = useState(false);
     const [newEncounterName, setNewEncounterName] = useState(encounter.name);
+
+    useEffect(() => {
+        setNewEncounterName(encounter.name);
+    }, [encounter.name]);
 
     const handleStartEncounterRename = () => {
         flushSync(() => {
@@ -28,6 +32,7 @@ export default function Header({encounter}: Props) {
         renameEncounter(encounter.id, newEncounterName);
         setEditingEncounterName(false);
     };
+
     return (
         <header className="py-4">
             {editingEncounterName ? (
