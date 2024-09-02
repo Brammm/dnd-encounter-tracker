@@ -14,13 +14,13 @@ type Props = {
 };
 
 export function CharacterRow({character, encounterId}: Props) {
-    const {activeCharacter, deleteCharacter, encounterStarted, renameCharacter, updateInitiative} = useApp(
+    const {characterIsActive, deleteCharacter, encounterStarted, renameCharacter, updateInitiative} = useApp(
         ({deleteCharacter, encounters, renameCharacter, updateInitiative}) => ({
             deleteCharacter,
             renameCharacter,
             updateInitiative,
             encounterStarted: encounters[encounterId].turn !== undefined,
-            activeCharacter: encounters[encounterId].activeCharacter,
+            characterIsActive: encounters[encounterId].activeCharacter === character.id,
         }),
     );
     const [showHistory, setShowHistory] = useState<boolean>(false);
@@ -57,45 +57,42 @@ export function CharacterRow({character, encounterId}: Props) {
         renameCharacter(encounterId, character.id, value.trim());
     };
 
-    const characterIsActive = character.id === activeCharacter;
-
     return (
-        <div className={clsx('border rounded-lg', characterIsActive ? 'border-primary' : 'border-gray-200')}>
-            <div className={clsx('flex')}>
-                <div
-                    className={clsx(
-                        'flex flex-col p-2',
-                        showHistory ? 'rounded-tl-lg' : 'rounded-l-lg',
-                        characterIsActive ? 'bg-primary text-white' : 'bg-gray-200',
-                    )}
+        <div
+            className={clsx(
+                'col-span-5 grid grid-cols-subgrid overflow-clip border rounded-lg',
+                characterIsActive ? 'border-primary' : 'border-gray-200',
+            )}
+        >
+            <div className={clsx('flex flex-col p-1', characterIsActive ? 'bg-primary text-white' : 'bg-gray-200')}>
+                <span>Initiative</span>
+                <EditableText
+                    value={character.initiative.toString()}
+                    onChange={(value) => updateInitiative(encounterId, character.id, parseInt(value))}
                 >
-                    <span>Initiative</span>
-                    <EditableText
-                        value={character.initiative.toString()}
-                        onChange={(value) => updateInitiative(encounterId, character.id, parseInt(value))}
-                    >
-                        {(props) => (
-                            <div className="w-16">
-                                <InitiativeInput {...props} />
-                            </div>
-                        )}
-                    </EditableText>
-                </div>
-                <div className="group place-self-center px-4 flex">
-                    <button onClick={handleDelete} type="button">
-                        <CharacterIcon className="h-4 mr-2 text-gray-400 place-self-center group-hover:hidden" />
-                        <XMarkIcon className="h-4 mr-2 text-gray-400 place-self-center hidden group-hover:inline-block" />
-                    </button>
-                    <EditableText value={character.name} onChange={handleRename} />
-                </div>
-                {character.hp !== undefined && (
+                    {(props) => (
+                        <div className="w-16">
+                            <InitiativeInput {...props} />
+                        </div>
+                    )}
+                </EditableText>
+            </div>
+            <div className="px-4 group content-center">
+                <button onClick={handleDelete} type="button">
+                    <CharacterIcon className="h-4 mr-2 text-gray-400 place-self-center group-hover:hidden" />
+                    <XMarkIcon className="h-4 mr-2 text-gray-400 place-self-center hidden group-hover:inline-block" />
+                </button>
+                <EditableText value={character.name} onChange={handleRename} />
+            </div>
+            {character.hp !== undefined && (
+                <>
                     <div
                         className={clsx(
-                            'flex border-l p-2 place-items-center gap-x-4',
+                            'border-l p-2 content-center gap-x-4',
                             characterIsActive ? 'border-primary' : 'border-gray-200',
                         )}
                     >
-                        <div className="flex relative h-full items-center">
+                        <div className="relative h-full content-center">
                             <span>
                                 <abbr title={character.hp.toString()}>{currentHp}</abbr> HP
                             </span>
@@ -112,30 +109,38 @@ export function CharacterRow({character, encounterId}: Props) {
                                             hpPercentage >= 60
                                                 ? 'bg-green-600'
                                                 : hpPercentage >= 30
-                                                ? 'bg-orange-400'
-                                                : 'bg-red-500',
+                                                  ? 'bg-orange-400'
+                                                  : 'bg-red-500',
                                         )}
                                         style={{width: `${hpPercentage}%`}}
                                     ></div>
                                 </div>
                             )}
                         </div>
+                    </div>
+                    <div className="content-center p-2">
                         {encounterStarted && <ModifyHealth characterId={character.id} encounterId={encounterId} />}
                     </div>
-                )}
-                {character.hpChanges.length > 0 && (
-                    <div className="flex ml-auto place-items-center border-l px-2">
-                        <button onClick={() => setShowHistory(!showHistory)}>
-                            {showHistory ? <ChevronUpIcon className="h-4" /> : <ChevronDownIcon className="h-4" />}
-                        </button>
-                    </div>
-                )}
-            </div>
+                </>
+            )}
+            {character.hpChanges.length > 0 && (
+                <div className="content-center border-l px-2">
+                    <button onClick={() => setShowHistory(!showHistory)}>
+                        {showHistory ? <ChevronUpIcon className="h-4" /> : <ChevronDownIcon className="h-4" />}
+                    </button>
+                </div>
+            )}
             {showHistory && (
-                <div className={clsx('border-t p-4', characterIsActive ? 'border-primary' : 'border-gray-200')}>
+                <div
+                    className={clsx(
+                        'border-t p-4 col-span-5',
+                        characterIsActive ? 'border-primary' : 'border-gray-200',
+                    )}
+                >
                     <HpHistory character={character} />
                 </div>
             )}
         </div>
+        // </div>
     );
 }
