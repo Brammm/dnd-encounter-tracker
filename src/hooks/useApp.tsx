@@ -241,8 +241,9 @@ const useApp = create<State & Actions>()(
 
                     const currentHp = calculateCurrentHp(character);
 
-                    return character.type === 'PC' || (currentHp && currentHp > 0);
+                    return currentHp !== 0;
                 });
+
                 const activeCharacterIndex = availableCharacters.findIndex(
                     (character) => character.id === encounter.activeCharacter,
                 );
