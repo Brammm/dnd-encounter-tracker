@@ -1,5 +1,5 @@
 import useApp, {Character} from '../../hooks/useApp.tsx';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import EditableText from '../EditableText.tsx';
 import {clsx} from 'clsx';
 import {BugAntIcon, ChevronDownIcon, ChevronUpIcon, UserIcon, XMarkIcon} from '@heroicons/react/24/solid';
@@ -24,6 +24,12 @@ export function CharacterRow({character, encounterId}: Props) {
         }),
     );
     const [showHistory, setShowHistory] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (character.hpChanges.length === 0) {
+            setShowHistory(false);
+        }
+    }, [character.hpChanges]);
 
     const currentHp = calculateCurrentHp(character);
 
@@ -127,7 +133,7 @@ export function CharacterRow({character, encounterId}: Props) {
             </div>
             {showHistory && (
                 <div className={clsx('border-t p-4', characterIsActive ? 'border-primary' : 'border-gray-200')}>
-                    <HpHistory hpChanges={character.hpChanges} />
+                    <HpHistory character={character} />
                 </div>
             )}
         </div>
