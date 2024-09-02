@@ -110,29 +110,39 @@ export default function Main({encounter}: Props) {
                     }}
                 >
                     <PlusCircleIcon className="h-4" />
-                    Add character
+                    <span title="Add character" className="hidden lg:inline">
+                        Add character
+                    </span>
                 </Button>
                 {encounter.characters.length > 0 && (
                     <>
                         <Button impact="secondary" size="small" onClick={() => sortOnInitiative(encounter.id)}>
                             <ArrowDownIcon className="h-4" />
-                            Sort on initiative
+                            <span title="Sort on initiative" className="hidden lg:inline">
+                                Sort on initiative
+                            </span>
                         </Button>
                         {encounter.turn ? (
                             <>
                                 <Button impact="secondary" size="small" onClick={() => nextCharacter(encounter.id)}>
                                     <ForwardIcon className="h-4" />
-                                    Next character
+                                    <span title="Next character" className="hidden lg:inline">
+                                        Next character
+                                    </span>
                                 </Button>
                                 <Button impact="secondary" size="small" onClick={() => resetEncounter(encounter.id)}>
                                     <ArrowUturnLeftIcon className="h-4" />
-                                    Reset
+                                    <span title="Reset" className="hidden lg:inline">
+                                        Reset
+                                    </span>
                                 </Button>
                             </>
                         ) : (
                             <Button impact="secondary" size="small" onClick={() => startEncounter(encounter.id)}>
                                 <PlayIcon className="h-4" />
-                                Start
+                                <span title="Start" className="hidden lg:inline">
+                                    Start
+                                </span>
                             </Button>
                         )}
                         <Button
@@ -143,7 +153,9 @@ export default function Main({encounter}: Props) {
                             }}
                         >
                             <DocumentDuplicateIcon className="h-4" />
-                            Duplicate
+                            <span title="Duplicate" className="hidden lg:inline">
+                                Duplicate
+                            </span>
                         </Button>
                     </>
                 )}
@@ -157,7 +169,9 @@ export default function Main({encounter}: Props) {
                     }}
                 >
                     <TrashIcon className="h-4" />
-                    Delete
+                    <span title="Delete" className="hidden lg:inline">
+                        Delete
+                    </span>
                 </Button>
             </div>
 

@@ -15,7 +15,7 @@ type Props = {
 
 const sizeClasses: Record<Size, string> = {
     normal: 'px-3 py-2',
-    small: 'px-2 py-0.5',
+    small: 'px-2 py-1',
 };
 const impactClasses: Record<Impact, string> = {
     primary: 'border border-primary bg-primary hover:bg-highlight hover:border-highlight',
@@ -33,7 +33,7 @@ export default function Button({
     return (
         <button
             className={clsx(
-                'h-min inline-flex items-center rounded gap-x-1.5 text-white ',
+                'inline-flex items-center rounded gap-x-1.5 text-white ',
                 sizeClasses[size],
                 impactClasses[impact],
             )}
