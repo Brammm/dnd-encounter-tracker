@@ -53,6 +53,7 @@ type Actions = {
     ) => void;
     deleteCharacter: (encounterId: EncounterId, characterId: CharacterId) => void;
     renameCharacter: (encounterId: EncounterId, characterId: CharacterId, name: string) => void;
+    modifyBaseHp: (encounterId: EncounterId, characterId: CharacterId, amount: number) => void;
     modifyHp: (encounterId: EncounterId, characterId: CharacterId, amount: number) => void;
     deleteHpChange: (encounterId: EncounterId, characterId: CharacterId, index: number) => void;
     updateInitiative: (encounterId: EncounterId, characterId: CharacterId, initiative: number) => void;
@@ -182,6 +183,19 @@ const useApp = create<State & Actions>()(
                             return character;
                         },
                     );
+                });
+            },
+            modifyBaseHp: (encounterId, characterId, amount) => {
+                set(({encounters}) => {
+                    const character = encounters[encounterId].characters.find(
+                        (character) => character.id === characterId,
+                    );
+
+                    if (!character) {
+                        throw new Error('Cannot modify character HP');
+                    }
+
+                    character.hp = amount;
                 });
             },
             modifyHp: (encounterId, characterId, amount) => {
