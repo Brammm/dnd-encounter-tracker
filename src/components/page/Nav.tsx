@@ -1,12 +1,18 @@
+import { PlusCircleIcon, TrashIcon } from '@heroicons/react/24/solid';
+import useApp from '../../hooks/useApp.tsx';
+import Button from '../Button.tsx';
+import Footer from './Footer.tsx';
 import Logo from './Logo.tsx';
 import NavItem from './NavItem.tsx';
-import Button from '../Button.tsx';
-import {PlusCircleIcon, TrashIcon} from '@heroicons/react/24/solid';
-import Footer from './Footer.tsx';
-import useApp from '../../hooks/useApp.tsx';
 
 export default function Nav() {
-    const {activeEncounterId, addEncounter, encounters, reset, selectActiveEncounter} = useApp();
+    const {
+        activeEncounterId,
+        addEncounter,
+        encounters,
+        reset,
+        selectActiveEncounter,
+    } = useApp();
 
     const handleReset = () => {
         if (confirm('Are you sure? This will wipe everything.')) {

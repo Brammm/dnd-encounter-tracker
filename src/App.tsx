@@ -1,20 +1,24 @@
-import useApp from './hooks/useApp.tsx';
+import { Dialog, Transition } from '@headlessui/react';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/16/solid';
+import { Fragment, useState } from 'react';
+import Header from './components/encounter/Header.tsx';
 import Main from './components/page/Main.tsx';
 import Nav from './components/page/Nav.tsx';
-import {Dialog, Transition} from '@headlessui/react';
-import {Fragment, useState} from 'react';
-import {Bars3Icon, XMarkIcon} from '@heroicons/react/16/solid';
-import Header from './components/encounter/Header.tsx';
+import useApp from './hooks/useApp.tsx';
 
 export default function App() {
-    const {activeEncounterId, encounters} = useApp();
+    const { activeEncounterId, encounters } = useApp();
     const activeEncounter = encounters[activeEncounterId];
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
         <div>
             <Transition.Root show={sidebarOpen} as={Fragment}>
-                <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
+                <Dialog
+                    as="div"
+                    className="relative z-50 lg:hidden"
+                    onClose={setSidebarOpen}
+                >
                     <Transition.Child
                         as={Fragment}
                         enter="transition-opacity ease-linear duration-300"
@@ -51,10 +55,17 @@ export default function App() {
                                         <button
                                             type="button"
                                             className="-m-2.5 p-2.5"
-                                            onClick={() => setSidebarOpen(false)}
+                                            onClick={() =>
+                                                setSidebarOpen(false)
+                                            }
                                         >
-                                            <span className="sr-only">Close sidebar</span>
-                                            <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
+                                            <span className="sr-only">
+                                                Close sidebar
+                                            </span>
+                                            <XMarkIcon
+                                                className="h-6 w-6 text-white"
+                                                aria-hidden="true"
+                                            />
                                         </button>
                                     </div>
                                 </Transition.Child>
@@ -80,7 +91,10 @@ export default function App() {
                         <Bars3Icon className="h-6 w-6" aria-hidden="true" />
                     </button>
 
-                    <div className="h-6 w-px bg-gray-900/10 lg:hidden" aria-hidden="true" />
+                    <div
+                        className="h-6 w-px bg-gray-900/10 lg:hidden"
+                        aria-hidden="true"
+                    />
 
                     <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
                         <Header encounter={activeEncounter} />

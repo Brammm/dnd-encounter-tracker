@@ -12,10 +12,13 @@ export function calculateMaximum(formula: string): number {
         return 0;
     }
 
-    const {operators, output} = symbols.reduce<{output: string[]; operators: string[]}>(
-        ({operators, output}, symbol) => {
-            const numeric = parseFloat(symbol);
-            if (isNaN(numeric)) {
+    const { operators, output } = symbols.reduce<{
+        output: string[];
+        operators: string[];
+    }>(
+        ({ operators, output }, symbol) => {
+            const numeric = Number.parseFloat(symbol);
+            if (Number.isNaN(numeric)) {
                 while (operators.length) {
                     output.push(operators.pop() as string);
                 }
@@ -24,9 +27,9 @@ export function calculateMaximum(formula: string): number {
                 output.push(symbol);
             }
 
-            return {output, operators};
+            return { output, operators };
         },
-        {output: [], operators: []},
+        { output: [], operators: [] },
     );
 
     while (operators.length) {
@@ -38,7 +41,12 @@ export function calculateMaximum(formula: string): number {
             const operation = operations[token as keyof typeof operations];
             const b = stack.pop();
             const a = stack.pop();
-            stack.push(operation(parseInt(a as string), parseInt(b as string)).toString());
+            stack.push(
+                operation(
+                    Number.parseInt(a as string),
+                    Number.parseInt(b as string),
+                ).toString(),
+            );
         } else {
             stack.push(token);
         }
@@ -46,5 +54,5 @@ export function calculateMaximum(formula: string): number {
         return stack;
     }, []);
 
-    return parseInt(result[0]);
+    return Number.parseInt(result[0]);
 }

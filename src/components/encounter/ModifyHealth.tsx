@@ -1,18 +1,25 @@
-import useApp, {CharacterId, EncounterId} from '../../hooks/useApp.tsx';
-import {useState} from 'react';
-import {BeakerIcon, BoltIcon} from '@heroicons/react/16/solid';
+import { BeakerIcon, BoltIcon } from '@heroicons/react/16/solid';
+import { useState } from 'react';
+import useApp, {
+    type CharacterId,
+    type EncounterId,
+} from '../../hooks/useApp.tsx';
 
 type Props = {
     characterId: CharacterId;
     encounterId: EncounterId;
 };
 
-export default function ModifyHealth({characterId, encounterId}: Props) {
-    const {modifyHp} = useApp(({modifyHp}) => ({modifyHp}));
+export default function ModifyHealth({ characterId, encounterId }: Props) {
+    const { modifyHp } = useApp(({ modifyHp }) => ({ modifyHp }));
     const [amount, setAmount] = useState<string>('');
 
-    const handleModify = (multiplier: number = 1) => {
-        modifyHp(encounterId, characterId, parseInt(amount) * multiplier);
+    const handleModify = (multiplier = 1) => {
+        modifyHp(
+            encounterId,
+            characterId,
+            Number.parseInt(amount) * multiplier,
+        );
         setAmount('');
     };
 

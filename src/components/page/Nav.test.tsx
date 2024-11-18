@@ -1,7 +1,7 @@
-import {act, render, screen} from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import useApp, {State} from '../../hooks/useApp.tsx';
+import useApp, { type State } from '../../hooks/useApp.tsx';
 import Nav from './Nav.tsx';
 
 const user = userEvent.setup();
@@ -14,7 +14,7 @@ describe('App', () => {
     test('Should render with one initial encounter', async () => {
         renderComponent();
 
-        const navButton = screen.getByRole('button', {name: /encounter 1/i});
+        const navButton = screen.getByRole('button', { name: /encounter 1/i });
         expect(navButton).toBeInTheDocument();
         expect(navButton).toHaveAttribute('aria-current', 'page');
     });
@@ -23,10 +23,12 @@ describe('App', () => {
         renderComponent();
 
         await act(async () => {
-            await user.click(screen.getByRole('button', {name: /add encounter/i}));
+            await user.click(
+                screen.getByRole('button', { name: /add encounter/i }),
+            );
         });
 
-        const navButton = screen.getByRole('button', {name: /encounter 2/i});
+        const navButton = screen.getByRole('button', { name: /encounter 2/i });
         expect(navButton).toBeInTheDocument();
         expect(navButton).toHaveAttribute('aria-current', 'page');
     });
@@ -35,13 +37,13 @@ describe('App', () => {
         renderComponent({
             activeEncounterId: 'foo',
             encounters: {
-                foo: {name: 'Foo', characters: [], id: 'foo'},
-                bar: {name: 'Bar', characters: [], id: 'bar'},
+                foo: { name: 'Foo', characters: [], id: 'foo' },
+                bar: { name: 'Bar', characters: [], id: 'bar' },
             },
         });
 
-        const fooNav = screen.getByRole('button', {name: /foo/i});
-        const barNav = screen.getByRole('button', {name: /bar/i});
+        const fooNav = screen.getByRole('button', { name: /foo/i });
+        const barNav = screen.getByRole('button', { name: /bar/i });
         expect(fooNav).toHaveAttribute('aria-current', 'page');
         expect(barNav).not.toHaveAttribute('aria-current', 'page');
         await act(async () => {
@@ -56,12 +58,12 @@ describe('App', () => {
         renderComponent({
             activeEncounterId: 'foo',
             encounters: {
-                foo: {name: 'Foo', characters: [], id: 'foo'},
-                bar: {name: 'Bar', characters: [], id: 'bar'},
+                foo: { name: 'Foo', characters: [], id: 'foo' },
+                bar: { name: 'Bar', characters: [], id: 'bar' },
             },
         });
 
-        const resetButton = screen.getByRole('button', {name: /reset/i});
+        const resetButton = screen.getByRole('button', { name: /reset/i });
         await act(async () => {
             await user.click(resetButton);
         });
@@ -75,12 +77,12 @@ describe('App', () => {
         renderComponent({
             activeEncounterId: 'foo',
             encounters: {
-                foo: {name: 'Foo', characters: [], id: 'foo'},
-                bar: {name: 'Bar', characters: [], id: 'bar'},
+                foo: { name: 'Foo', characters: [], id: 'foo' },
+                bar: { name: 'Bar', characters: [], id: 'bar' },
             },
         });
 
-        const resetButton = screen.getByRole('button', {name: /reset/i});
+        const resetButton = screen.getByRole('button', { name: /reset/i });
         await act(async () => {
             await user.click(resetButton);
         });

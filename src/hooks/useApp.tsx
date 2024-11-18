@@ -1,8 +1,8 @@
 'use client';
-import {create} from 'zustand';
-import {immer} from 'zustand/middleware/immer';
-import {persist} from 'zustand/middleware';
-import {ulid} from 'ulid';
+import { ulid } from 'ulid';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
 import calculateCurrentHp from '../util/currentHp.ts';
 
 export type EncounterId = string;
@@ -41,7 +41,10 @@ export type State = {
 
 type Actions = {
     selectActiveEncounter: (encounterId: EncounterId) => void;
-    updateSettings: (multiplier: number, hpType: State['settings']['hpType']) => void;
+    updateSettings: (
+        multiplier: number,
+        hpType: State['settings']['hpType'],
+    ) => void;
     addEncounter: () => void;
     duplicateEncounter: (encounterId: EncounterId) => void;
     deleteEncounter: (encounterId: EncounterId) => void;
@@ -51,12 +54,35 @@ type Actions = {
         character: Pick<Character, 'type' | 'name' | 'hp' | 'initiative'>,
         amount: number,
     ) => void;
-    deleteCharacter: (encounterId: EncounterId, characterId: CharacterId) => void;
-    renameCharacter: (encounterId: EncounterId, characterId: CharacterId, name: string) => void;
-    modifyBaseHp: (encounterId: EncounterId, characterId: CharacterId, amount: number) => void;
-    modifyHp: (encounterId: EncounterId, characterId: CharacterId, amount: number) => void;
-    deleteHpChange: (encounterId: EncounterId, characterId: CharacterId, index: number) => void;
-    updateInitiative: (encounterId: EncounterId, characterId: CharacterId, initiative: number) => void;
+    deleteCharacter: (
+        encounterId: EncounterId,
+        characterId: CharacterId,
+    ) => void;
+    renameCharacter: (
+        encounterId: EncounterId,
+        characterId: CharacterId,
+        name: string,
+    ) => void;
+    modifyBaseHp: (
+        encounterId: EncounterId,
+        characterId: CharacterId,
+        amount: number,
+    ) => void;
+    modifyHp: (
+        encounterId: EncounterId,
+        characterId: CharacterId,
+        amount: number,
+    ) => void;
+    deleteHpChange: (
+        encounterId: EncounterId,
+        characterId: CharacterId,
+        index: number,
+    ) => void;
+    updateInitiative: (
+        encounterId: EncounterId,
+        characterId: CharacterId,
+        initiative: number,
+    ) => void;
     sortOnInitiative: (encounterId: EncounterId) => void;
     startEncounter: (encounterId: EncounterId) => void;
     nextCharacter: (encounterId: EncounterId) => void;
@@ -94,7 +120,7 @@ const useApp = create<State & Actions>()(
             },
             updateSettings: (multiplier, hpType) => {
                 set({
-                    settings: {multiplier, hpType},
+                    settings: { multiplier, hpType },
                 });
             },
             addEncounter: () => {
@@ -102,7 +128,7 @@ const useApp = create<State & Actions>()(
                 set((state) => {
                     state.encounters[nextId] = {
                         id: nextId,
-                        name: 'Encounter ' + (Object.values(state.encounters).length + 1).toString(),
+                        name: `Encounter ${(Object.values(state.encounters).length + 1).toString()}`,
                         characters: [],
                     };
                     state.activeEncounterId = nextId;
@@ -111,12 +137,14 @@ const useApp = create<State & Actions>()(
             duplicateEncounter: (encounterId) => {
                 const nextId = ulid();
 
-                const characters = get().encounters[encounterId].characters.map((char) => ({...char, hpChanges: []}));
+                const characters = get().encounters[encounterId].characters.map(
+                    (char) => ({ ...char, hpChanges: [] }),
+                );
 
                 set((state) => {
                     state.encounters[nextId] = {
                         id: nextId,
-                        name: 'Encounter ' + (Object.values(state.encounters).length + 1).toString(),
+                        name: `Encounter ${(Object.values(state.encounters).length + 1).toString()}`,
                         characters,
                     };
                     state.activeEncounterId = nextId;
@@ -130,7 +158,9 @@ const useApp = create<State & Actions>()(
                     }
                     if (encounterId === state.activeEncounterId) {
                         console.log('test');
-                        state.activeEncounterId = Object.keys(state.encounters)[0];
+                        state.activeEncounterId = Object.keys(
+                            state.encounters,
+                        )[0];
                     }
                 });
             },
@@ -150,7 +180,10 @@ const useApp = create<State & Actions>()(
 
                 set((state) => {
                     for (let i = 1; i <= amount; i++) {
-                        const name = amount > 1 ? character.name + ' ' + i : character.name;
+                        const name =
+                            amount > 1
+                                ? `${character.name} ${i}`
+                                : character.name;
 
                         state.encounters[encounterId].characters.push({
                             ...character,
@@ -163,7 +196,9 @@ const useApp = create<State & Actions>()(
             },
             deleteCharacter: (encounterId, characterId) => {
                 set((state) => {
-                    state.encounters[encounterId].characters = state.encounters[encounterId].characters.filter(
+                    state.encounters[encounterId].characters = state.encounters[
+                        encounterId
+                    ].characters.filter(
                         (character) => character.id !== characterId,
                     );
                 });
@@ -174,19 +209,19 @@ const useApp = create<State & Actions>()(
                 }
 
                 set((state) => {
-                    state.encounters[encounterId].characters = state.encounters[encounterId].characters.map(
-                        (character) => {
-                            if (character.id === characterId) {
-                                character.name = name;
-                            }
+                    state.encounters[encounterId].characters = state.encounters[
+                        encounterId
+                    ].characters.map((character) => {
+                        if (character.id === characterId) {
+                            character.name = name;
+                        }
 
-                            return character;
-                        },
-                    );
+                        return character;
+                    });
                 });
             },
             modifyBaseHp: (encounterId, characterId, amount) => {
-                set(({encounters}) => {
+                set(({ encounters }) => {
                     const character = encounters[encounterId].characters.find(
                         (character) => character.id === characterId,
                     );
@@ -199,7 +234,7 @@ const useApp = create<State & Actions>()(
                 });
             },
             modifyHp: (encounterId, characterId, amount) => {
-                set(({encounters}) => {
+                set(({ encounters }) => {
                     const character = encounters[encounterId].characters.find(
                         (character) => character.id === characterId,
                     );
@@ -208,11 +243,14 @@ const useApp = create<State & Actions>()(
                         throw new Error('Cannot modify character HP');
                     }
 
-                    character.hpChanges.push({amount, turn: encounters[encounterId].turn || 1});
+                    character.hpChanges.push({
+                        amount,
+                        turn: encounters[encounterId].turn || 1,
+                    });
                 });
             },
             deleteHpChange: (encounterId, characterId, index) => {
-                set(({encounters}) => {
+                set(({ encounters }) => {
                     const character = encounters[encounterId].characters.find(
                         (character) => character.id === characterId,
                     );
@@ -225,7 +263,7 @@ const useApp = create<State & Actions>()(
                 });
             },
             updateInitiative: (encounterId, characterId, initiative) => {
-                set(({encounters}) => {
+                set(({ encounters }) => {
                     const character = encounters[encounterId].characters.find(
                         (character) => character.id === characterId,
                     );
@@ -237,8 +275,10 @@ const useApp = create<State & Actions>()(
                 });
             },
             sortOnInitiative: (encounterId) => {
-                set(({encounters}) => {
-                    encounters[encounterId].characters.sort((a, b) => b.initiative - a.initiative);
+                set(({ encounters }) => {
+                    encounters[encounterId].characters.sort(
+                        (a, b) => b.initiative - a.initiative,
+                    );
                 });
             },
             startEncounter: (encounterId) => {
@@ -246,10 +286,11 @@ const useApp = create<State & Actions>()(
                     return;
                 }
 
-                set(({encounters}) => {
+                set(({ encounters }) => {
                     encounters[encounterId].turn = 1;
                     if (encounters[encounterId].characters[0]) {
-                        encounters[encounterId].activeCharacter = encounters[encounterId].characters[0].id;
+                        encounters[encounterId].activeCharacter =
+                            encounters[encounterId].characters[0].id;
                     }
                 });
             },
@@ -261,46 +302,54 @@ const useApp = create<State & Actions>()(
                     return;
                 }
 
-                const availableCharacters = encounter.characters.filter((character) => {
-                    // Current character is always available
-                    if (character.id === encounter.activeCharacter) {
-                        return true;
-                    }
+                const availableCharacters = encounter.characters.filter(
+                    (character) => {
+                        // Current character is always available
+                        if (character.id === encounter.activeCharacter) {
+                            return true;
+                        }
 
-                    const currentHp = calculateCurrentHp(character);
+                        const currentHp = calculateCurrentHp(character);
 
-                    return currentHp !== 0;
-                });
+                        return currentHp !== 0;
+                    },
+                );
 
                 const activeCharacterIndex = availableCharacters.findIndex(
                     (character) => character.id === encounter.activeCharacter,
                 );
                 const nextCharacterIndex =
-                    activeCharacterIndex === availableCharacters.length - 1 ? 0 : activeCharacterIndex + 1;
+                    activeCharacterIndex === availableCharacters.length - 1
+                        ? 0
+                        : activeCharacterIndex + 1;
 
                 const nextCharacter = availableCharacters[nextCharacterIndex];
 
-                set(({encounters}) => {
+                set(({ encounters }) => {
                     encounters[encounterId].activeCharacter = nextCharacter.id;
                     if (nextCharacterIndex === 0) {
-                        encounters[encounterId].turn!++;
+                        encounters[encounterId].turn = encounters[encounterId]
+                            .turn
+                            ? encounters[encounterId].turn++
+                            : 1;
                     }
                 });
             },
             resetEncounter: (encounterId) => {
-                set(({encounters}) => {
+                set(({ encounters }) => {
                     encounters[encounterId].turn = undefined;
                     encounters[encounterId].activeCharacter = undefined;
-                    encounters[encounterId].characters.forEach((character) => {
+                    for (const character of encounters[encounterId]
+                        .characters) {
                         character.hpChanges = [];
-                    });
+                    }
                 });
             },
             reset: () => {
                 set(defaultState);
             },
         })),
-        {name: 'dnd-encounter-tracker', version: 2},
+        { name: 'dnd-encounter-tracker', version: 2 },
     ),
 );
 

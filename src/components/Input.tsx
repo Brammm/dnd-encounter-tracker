@@ -1,4 +1,5 @@
-import React, {ChangeEvent} from 'react';
+import type React from 'react';
+import type { ChangeEvent } from 'react';
 
 export type InputProps = {
     id?: string;
@@ -12,10 +13,21 @@ export type InputProps = {
 
 export const defaultInputClassName = 'border-gray-400 shadow-sm rounded w-full';
 
-export default function Input({id, name, onChange, required, step = 1, type = 'text', value}: InputProps) {
-    const extraProps: React.InputHTMLAttributes<HTMLInputElement> = type === 'number' ? {step, min: 0} : {};
+export default function Input({
+    id,
+    name,
+    onChange,
+    required,
+    step = 1,
+    type = 'text',
+    value,
+}: InputProps) {
+    const extraProps: React.InputHTMLAttributes<HTMLInputElement> =
+        type === 'number' ? { step, min: 0 } : {};
 
-    const handleChange = onChange ? (e: ChangeEvent<HTMLInputElement>) => onChange(e.currentTarget.value) : undefined;
+    const handleChange = onChange
+        ? (e: ChangeEvent<HTMLInputElement>) => onChange(e.currentTarget.value)
+        : undefined;
 
     return (
         <input

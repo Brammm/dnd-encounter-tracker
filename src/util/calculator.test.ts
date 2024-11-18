@@ -1,4 +1,4 @@
-import {calculateMaximum} from './calculator.ts';
+import { calculateMaximum } from './calculator.ts';
 
 const dataProvider: [string, number][] = [
     ['1', 1],
@@ -13,8 +13,8 @@ const dataProvider: [string, number][] = [
 
 describe('calculateMaximum', () => {
     it('Should calculate the maximum for each formula', () => {
-        dataProvider.forEach(([formula, expected]) => {
+        for (const [formula, expected] of dataProvider) {
             expect(calculateMaximum(formula)).toBe(expected);
-        });
+        }
     });
 });

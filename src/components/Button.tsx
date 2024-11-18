@@ -1,5 +1,5 @@
-import {ReactNode} from 'react';
-import {clsx} from 'clsx';
+import { clsx } from 'clsx';
+import type { ReactNode } from 'react';
 
 type Size = 'normal' | 'small';
 type Impact = 'primary' | 'secondary';
@@ -18,8 +18,10 @@ const sizeClasses: Record<Size, string> = {
     small: 'px-2 py-1',
 };
 const impactClasses: Record<Impact, string> = {
-    primary: 'border border-primary bg-primary hover:bg-highlight hover:border-highlight',
-    secondary: 'border border-accent bg-accent hover:opacity-80 disabled:opacity-80',
+    primary:
+        'border border-primary bg-primary hover:bg-highlight hover:border-highlight',
+    secondary:
+        'border border-accent bg-accent hover:opacity-80 disabled:opacity-80',
 };
 
 export default function Button({

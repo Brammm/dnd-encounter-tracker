@@ -1,5 +1,13 @@
-import { KeyboardEvent, ChangeEvent, useRef, useState, RefObject, ReactElement, ReactNode } from 'react';
-import {flushSync} from 'react-dom';
+import {
+    type ChangeEvent,
+    type KeyboardEvent,
+    type ReactElement,
+    type ReactNode,
+    type RefObject,
+    useRef,
+    useState,
+} from 'react';
+import { flushSync } from 'react-dom';
 
 type InputProps = {
     defaultValue: string;
@@ -15,7 +23,12 @@ type Props = {
     children?: (props: InputProps) => ReactElement;
 };
 
-export default function EditableText({children, onChange, renderValueAs, value}: Props) {
+export default function EditableText({
+    children,
+    onChange,
+    renderValueAs,
+    value,
+}: Props) {
     const [editing, setEditing] = useState(false);
     const ref = useRef<HTMLInputElement>(null);
 
@@ -43,7 +56,11 @@ export default function EditableText({children, onChange, renderValueAs, value}:
     };
 
     if (!editing) {
-        return <button onClick={handleEdit}>{renderValueAs || value}</button>;
+        return (
+            <button onClick={handleEdit} type="button">
+                {renderValueAs || value}
+            </button>
+        );
     }
 
     const inputProps: InputProps = {
@@ -57,5 +74,7 @@ export default function EditableText({children, onChange, renderValueAs, value}:
         return children(inputProps);
     }
 
-    return <input type="text" className="text-gray-800 rounded" {...inputProps} />;
+    return (
+        <input type="text" className="text-gray-800 rounded" {...inputProps} />
+    );
 }

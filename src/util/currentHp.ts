@@ -1,4 +1,4 @@
-import {Character} from '../hooks/useApp.tsx';
+import type { Character } from '../hooks/useApp.tsx';
 
 export default function calculateCurrentHp(char: Character) {
     const totalHp = char.hp;

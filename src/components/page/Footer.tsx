@@ -12,6 +12,8 @@ export default function Footer() {
                     width="36"
                     height="36"
                     viewBox="0 0 24 24"
+                    role="img"
+                    aria-label="Github logo"
                 >
                     <path
                         fill="currentColor"

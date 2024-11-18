@@ -1,5 +1,5 @@
-import {defaultInputClassName} from './Input.tsx';
-import {ChangeEvent} from 'react';
+import type { ChangeEvent } from 'react';
+import { defaultInputClassName } from './Input.tsx';
 
 type Props = {
     id?: string;
@@ -8,8 +8,10 @@ type Props = {
     onChange?: (value: string) => void;
 };
 
-export default function HpInput({id, name, onChange, value}: Props) {
-    const handleChange = onChange ? (e: ChangeEvent<HTMLInputElement>) => onChange(e.currentTarget.value) : undefined;
+export default function HpInput({ id, name, onChange, value }: Props) {
+    const handleChange = onChange
+        ? (e: ChangeEvent<HTMLInputElement>) => onChange(e.currentTarget.value)
+        : undefined;
 
     return (
         <input

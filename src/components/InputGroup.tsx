@@ -1,5 +1,5 @@
-import React, {ReactElement} from 'react';
-import {InputProps} from './Input.tsx';
+import React, { type ReactElement } from 'react';
+import type { InputProps } from './Input.tsx';
 import Label from './Label.tsx';
 
 type Props = {
@@ -8,8 +8,8 @@ type Props = {
     label: string;
 };
 
-export default function InputGroup({children, id, label}: Props) {
-    const input = React.cloneElement(children, {id});
+export default function InputGroup({ children, id, label }: Props) {
+    const input = React.cloneElement(children, { id });
 
     return (
         <div className="flex flex-col">

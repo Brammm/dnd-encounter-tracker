@@ -1,4 +1,4 @@
-import {ChangeEvent} from 'react';
+import type { ChangeEvent } from 'react';
 
 type Props = {
     id: string;
@@ -9,8 +9,17 @@ type Props = {
     onChange?: (value: string) => void;
 };
 
-export default function RadioButton({checked, id, label, name, onChange, value}: Props) {
-    const handleChange = onChange ? (e: ChangeEvent<HTMLInputElement>) => onChange(e.currentTarget.value) : undefined;
+export default function RadioButton({
+    checked,
+    id,
+    label,
+    name,
+    onChange,
+    value,
+}: Props) {
+    const handleChange = onChange
+        ? (e: ChangeEvent<HTMLInputElement>) => onChange(e.currentTarget.value)
+        : undefined;
 
     return (
         <label htmlFor={id} className="flex flex-row items-center">

@@ -1,18 +1,24 @@
-import {FormEvent, useEffect, useState} from 'react';
-import Button from '../Button.tsx';
-import RadioButton from '../RadioButton.tsx';
-import InputGroup from '../InputGroup.tsx';
-import InitiativeInput from '../InitiativeInput.tsx';
-import HpInput from '../HpInput.tsx';
-import NameComboBox, {CharacterData} from '../NameComboBox.tsx';
-import Input from '../Input.tsx';
-import {calculateMaximum} from '../../util/calculator.ts';
+import { type FormEvent, useEffect, useState } from 'react';
 import useApp from '../../hooks/useApp.tsx';
+import { calculateMaximum } from '../../util/calculator.ts';
+import Button from '../Button.tsx';
+import HpInput from '../HpInput.tsx';
+import InitiativeInput from '../InitiativeInput.tsx';
+import Input from '../Input.tsx';
+import InputGroup from '../InputGroup.tsx';
+import NameComboBox, { type CharacterData } from '../NameComboBox.tsx';
+import RadioButton from '../RadioButton.tsx';
 
 type CharacterType = 'PC' | 'NPC';
 
 type Props = {
-    onAdd: (type: CharacterType, amount: number, name: string, initiative: number, hp?: number) => void;
+    onAdd: (
+        type: CharacterType,
+        amount: number,
+        name: string,
+        initiative: number,
+        hp?: number,
+    ) => void;
 };
 
 type FormState = {
@@ -31,10 +37,12 @@ const initialState: FormState = {
     amount: 1,
 };
 
-export default function AddCharacterForm({onAdd}: Props) {
-    const {settings, updateSettings} = useApp();
+export default function AddCharacterForm({ onAdd }: Props) {
+    const { settings, updateSettings } = useApp();
     const [state, setState] = useState<FormState>(initialState);
-    const [selectedCharacter, setSelectedCharacter] = useState<CharacterData | undefined>(undefined);
+    const [selectedCharacter, setSelectedCharacter] = useState<
+        CharacterData | undefined
+    >(undefined);
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
@@ -44,8 +52,8 @@ export default function AddCharacterForm({onAdd}: Props) {
             return;
         }
 
-        let initiative = parseInt(state.initiative);
-        if (isNaN(initiative)) {
+        let initiative = Number.parseInt(state.initiative);
+        if (Number.isNaN(initiative)) {
             initiative = 0;
         }
 
@@ -53,8 +61,8 @@ export default function AddCharacterForm({onAdd}: Props) {
         if (!hp) {
             hp = undefined;
         } else {
-            hp = parseInt(hp);
-            if (isNaN(hp)) {
+            hp = Number.parseInt(hp);
+            if (Number.isNaN(hp)) {
                 hp = 0;
             }
         }
@@ -73,13 +81,15 @@ export default function AddCharacterForm({onAdd}: Props) {
             if (!selectedCharacter.custom && selectedCharacter.hp) {
                 const baseHp =
                     settings.hpType === 'AVERAGE'
-                        ? parseInt(selectedCharacter.hp.average)
+                        ? Number.parseInt(selectedCharacter.hp.average)
                         : calculateMaximum(selectedCharacter.hp.formula);
 
-                prevState.hp = Math.floor(baseHp * settings.multiplier).toString();
+                prevState.hp = Math.floor(
+                    baseHp * settings.multiplier,
+                ).toString();
             }
 
-            return {...prevState};
+            return { ...prevState };
         });
     }, [selectedCharacter, settings]);
 
@@ -95,7 +105,12 @@ export default function AddCharacterForm({onAdd}: Props) {
                             label="NPC"
                             name="type"
                             value="NPC"
-                            onChange={(value) => setState((prevState) => ({...prevState, type: value as 'PC' | 'NPC'}))}
+                            onChange={(value) =>
+                                setState((prevState) => ({
+                                    ...prevState,
+                                    type: value as 'PC' | 'NPC',
+                                }))
+                            }
                         />
                         <RadioButton
                             checked={state.type === 'PC'}
@@ -103,14 +118,23 @@ export default function AddCharacterForm({onAdd}: Props) {
                             label="PC"
                             name="type"
                             value="PC"
-                            onChange={(value) => setState((prevState) => ({...prevState, type: value as 'PC' | 'NPC'}))}
+                            onChange={(value) =>
+                                setState((prevState) => ({
+                                    ...prevState,
+                                    type: value as 'PC' | 'NPC',
+                                }))
+                            }
                         />
                     </p>
                 </div>
                 <InputGroup id="name" label="Name">
                     <NameComboBox
                         onChange={setSelectedCharacter}
-                        value={{name: state.name, hp: {average: '', formula: ''}, custom: false}}
+                        value={{
+                            name: state.name,
+                            hp: { average: '', formula: '' },
+                            custom: false,
+                        }}
                     />
                 </InputGroup>
                 <div className="flex gap-x-4">
@@ -119,7 +143,12 @@ export default function AddCharacterForm({onAdd}: Props) {
                             <HpInput
                                 name="hp"
                                 value={state.hp}
-                                onChange={(value) => setState((prevState) => ({...prevState, hp: value}))}
+                                onChange={(value) =>
+                                    setState((prevState) => ({
+                                        ...prevState,
+                                        hp: value,
+                                    }))
+                                }
                             />
                         </div>
                     </InputGroup>
@@ -127,7 +156,12 @@ export default function AddCharacterForm({onAdd}: Props) {
                         <div className="w-32">
                             <InitiativeInput
                                 name="initiative"
-                                onChange={(value) => setState((prevState) => ({...prevState, initiative: value}))}
+                                onChange={(value) =>
+                                    setState((prevState) => ({
+                                        ...prevState,
+                                        initiative: value,
+                                    }))
+                                }
                             />
                         </div>
                     </InputGroup>
@@ -143,7 +177,9 @@ export default function AddCharacterForm({onAdd}: Props) {
                             onChange={(value) =>
                                 setState((prevState) => ({
                                     ...prevState,
-                                    amount: isNaN(parseInt(value)) ? 1 : parseInt(value),
+                                    amount: Number.isNaN(Number.parseInt(value))
+                                        ? 1
+                                        : Number.parseInt(value),
                                 }))
                             }
                         />
@@ -162,7 +198,12 @@ export default function AddCharacterForm({onAdd}: Props) {
                             label="Average"
                             name="hp-type"
                             value="AVERAGE"
-                            onChange={(value) => updateSettings(settings.multiplier, value as 'AVERAGE' | 'FORMULA')}
+                            onChange={(value) =>
+                                updateSettings(
+                                    settings.multiplier,
+                                    value as 'AVERAGE' | 'FORMULA',
+                                )
+                            }
                         />
                         <RadioButton
                             checked={settings.hpType === 'FORMULA'}
@@ -170,7 +211,12 @@ export default function AddCharacterForm({onAdd}: Props) {
                             label="Max of formula (e.g. 2d4 = 8)"
                             name="hp-type"
                             value="FORMULA"
-                            onChange={(value) => updateSettings(settings.multiplier, value as 'AVERAGE' | 'FORMULA')}
+                            onChange={(value) =>
+                                updateSettings(
+                                    settings.multiplier,
+                                    value as 'AVERAGE' | 'FORMULA',
+                                )
+                            }
                         />
                     </p>
                 </div>
@@ -179,7 +225,12 @@ export default function AddCharacterForm({onAdd}: Props) {
                         <Input
                             type="number"
                             name="multiplier"
-                            onChange={(value) => updateSettings(parseFloat(value), settings.hpType)}
+                            onChange={(value) =>
+                                updateSettings(
+                                    Number.parseFloat(value),
+                                    settings.hpType,
+                                )
+                            }
                             step={0.1}
                             value={settings.multiplier.toString()}
                         />
