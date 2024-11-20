@@ -15,12 +15,18 @@ export default function ModifyHealth({ characterId, encounterId }: Props) {
     const [amount, setAmount] = useState<string>('');
 
     const handleModify = (multiplier = 1) => {
+        setAmount('');
+        const parsedAmount = Number.parseInt(amount);
+
+        if (Number.isNaN(parsedAmount)) {
+            return;
+        }
+
         modifyHp(
             encounterId,
             characterId,
-            Number.parseInt(amount) * multiplier,
+            parsedAmount * multiplier,
         );
-        setAmount('');
     };
 
     return (
