@@ -1,5 +1,5 @@
 import { BeakerIcon, BoltIcon } from '@heroicons/react/16/solid';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import useApp, {
     type CharacterId,
     type EncounterId,
@@ -13,12 +13,17 @@ type Props = {
 export default function ModifyHealth({ characterId, encounterId }: Props) {
     const { modifyHp } = useApp(({ modifyHp }) => ({ modifyHp }));
     const [amount, setAmount] = useState<string>('');
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const handleModify = (multiplier = 1) => {
         setAmount('');
         const parsedAmount = Number.parseInt(amount);
 
         if (Number.isNaN(parsedAmount)) {
+            if (inputRef.current) {
+                inputRef.current.value = '';
+            }
+            
             return;
         }
 
@@ -40,6 +45,7 @@ export default function ModifyHealth({ characterId, encounterId }: Props) {
                 min={1}
                 value={amount}
                 onChange={(e) => setAmount(e.currentTarget.value)}
+                ref={inputRef}
             />
             <button
                 className="py-2 px-3 border-y border-gray-300 bg-gray-100 hover:opacity-80 hover:bg-green-200"
