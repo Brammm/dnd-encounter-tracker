@@ -4,12 +4,7 @@ import useApp, { type Character } from '../../hooks/useApp.tsx';
 type Props = { character: Character };
 
 export default function HpHistory({ character }: Props) {
-    const { deleteHpChange, encounterId } = useApp(
-        ({ activeEncounterId, deleteHpChange }) => ({
-            encounterId: activeEncounterId,
-            deleteHpChange,
-        }),
-    );
+    const { deleteHpChange, activeEncounterId } = useApp();
 
     const totalDamage = Math.min(
         0,
@@ -35,7 +30,7 @@ export default function HpHistory({ character }: Props) {
                                         className="h-6 w-6 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-gray-100 text-white"
                                         onClick={() =>
                                             deleteHpChange(
-                                                encounterId,
+                                                activeEncounterId,
                                                 character.id,
                                                 i,
                                             )

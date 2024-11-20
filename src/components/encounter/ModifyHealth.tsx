@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default function ModifyHealth({ characterId, encounterId }: Props) {
-    const { modifyHp } = useApp(({ modifyHp }) => ({ modifyHp }));
+    const { modifyHp } = useApp();
     const [amount, setAmount] = useState<string>('');
     const inputRef = useRef<HTMLInputElement>(null);
 

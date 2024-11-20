@@ -21,29 +21,15 @@ type Props = {
 
 export function CharacterRow({ character, encounterId }: Props) {
     const {
-        characterIsActive,
         deleteCharacter,
-        encounterStarted,
+        encounters,
         modifyBaseHp,
         renameCharacter,
         updateInitiative,
-    } = useApp(
-        ({
-            deleteCharacter,
-            encounters,
-            modifyBaseHp,
-            renameCharacter,
-            updateInitiative,
-        }) => ({
-            deleteCharacter,
-            modifyBaseHp,
-            renameCharacter,
-            updateInitiative,
-            encounterStarted: encounters[encounterId].turn !== undefined,
-            characterIsActive:
-                encounters[encounterId].activeCharacter === character.id,
-        }),
-    );
+    } = useApp();
+    const encounterStarted = encounters[encounterId].turn !== undefined;
+    const characterIsActive =
+        encounters[encounterId].activeCharacter === character.id;
     const [showHistory, setShowHistory] = useState<boolean>(false);
 
     useEffect(() => {
