@@ -10,8 +10,11 @@ export default function HpHistory({ character }: Props) {
             deleteHpChange,
         }),
     );
-    
-    const totalDamage = Math.min(0, character.hpChanges.reduce((total, change) => total + change.amount, 0));
+
+    const totalDamage = Math.min(
+        0,
+        character.hpChanges.reduce((total, change) => total + change.amount, 0),
+    );
 
     return (
         <ul>

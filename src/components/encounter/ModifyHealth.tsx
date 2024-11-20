@@ -23,15 +23,11 @@ export default function ModifyHealth({ characterId, encounterId }: Props) {
             if (inputRef.current) {
                 inputRef.current.value = '';
             }
-            
+
             return;
         }
 
-        modifyHp(
-            encounterId,
-            characterId,
-            parsedAmount * multiplier,
-        );
+        modifyHp(encounterId, characterId, parsedAmount * multiplier);
     };
 
     return (
