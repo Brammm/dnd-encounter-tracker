@@ -10,12 +10,14 @@ export default function HpHistory({ character }: Props) {
             deleteHpChange,
         }),
     );
+    
+    const totalDamage = Math.min(0, character.hpChanges.reduce((total, change) => total + change.amount, 0));
 
     return (
-        <ul className="-mb-6">
+        <ul>
             {character.hpChanges.map((change, i) => (
                 // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                <li key={i}>
+                <li key={i} className="p-4 -mb-6 group">
                     <div className="relative pb-6">
                         {i !== character.hpChanges.length - 1 && (
                             <span
@@ -27,7 +29,7 @@ export default function HpHistory({ character }: Props) {
                             <div className="relative flex space-x-3">
                                 <div>
                                     <button
-                                        className="group h-6 w-6 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-gray-100 text-white"
+                                        className="h-6 w-6 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-gray-100 text-white"
                                         onClick={() =>
                                             deleteHpChange(
                                                 encounterId,
@@ -36,6 +38,7 @@ export default function HpHistory({ character }: Props) {
                                             )
                                         }
                                         type="button"
+                                        title="Remove"
                                     >
                                         <span className="inline group-hover:hidden">
                                             {change.turn}
@@ -54,6 +57,9 @@ export default function HpHistory({ character }: Props) {
                     </div>
                 </li>
             ))}
+            <li className="border-t p-4 text-sm">
+                Total damage taken: {totalDamage} HP
+            </li>
         </ul>
     );
 }

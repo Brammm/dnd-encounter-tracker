@@ -202,7 +202,7 @@ export function CharacterRow({ character, encounterId }: Props) {
             {showHistory && (
                 <div
                     className={clsx(
-                        'border-t p-4 col-span-5',
+                        'border-t col-span-5',
                         characterIsActive
                             ? 'border-primary'
                             : 'border-gray-200',
