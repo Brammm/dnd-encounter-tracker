@@ -152,15 +152,22 @@ const useApp = create<State & Actions>()(
             },
             deleteEncounter: (encounterId) => {
                 set((state) => {
+                    const deletedIndex = Object.keys(state.encounters).indexOf(
+                        encounterId,
+                    );
+
                     delete state.encounters[encounterId];
                     if (Object.values(state.encounters).length === 0) {
                         state.encounters = defaultState.encounters;
                     }
                     if (encounterId === state.activeEncounterId) {
-                        console.log('test');
-                        state.activeEncounterId = Object.keys(
+                        const newActiveEncounterId = Object.keys(
                             state.encounters,
-                        )[0];
+                        ).at(deletedIndex - 1);
+                        if (newActiveEncounterId === undefined) {
+                            throw new Error('No new encounter available');
+                        }
+                        state.activeEncounterId = newActiveEncounterId;
                     }
                 });
             },
