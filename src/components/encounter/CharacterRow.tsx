@@ -7,7 +7,7 @@ import {
 } from '@heroicons/react/24/solid';
 import { clsx } from 'clsx';
 import { useEffect, useState } from 'react';
-import useApp, { type Character } from '../../hooks/useApp.tsx';
+import useApp, { type Character } from '../../store/useApp.tsx';
 import calculateCurrentHp from '../../util/currentHp.ts';
 import EditableText from '../EditableText.tsx';
 import InitiativeInput from '../InitiativeInput.tsx';

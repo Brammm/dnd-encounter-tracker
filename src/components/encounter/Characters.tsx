@@ -1,4 +1,4 @@
-import type { Encounter } from '../../hooks/useApp.tsx';
+import type { Encounter } from '../../store/useApp.tsx';
 import { CharacterRow } from './CharacterRow.tsx';
 
 type Props = {

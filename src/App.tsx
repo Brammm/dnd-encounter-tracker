@@ -4,7 +4,7 @@ import { Fragment, useState } from 'react';
 import Header from './components/encounter/Header.tsx';
 import Main from './components/page/Main.tsx';
 import Nav from './components/page/Nav.tsx';
-import useApp from './hooks/useApp.tsx';
+import useApp from './store/useApp.tsx';
 
 export default function App() {
     const { activeEncounterId, encounters } = useApp();

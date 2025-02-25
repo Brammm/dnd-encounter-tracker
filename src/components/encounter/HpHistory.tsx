@@ -1,5 +1,5 @@
 import { XMarkIcon } from '@heroicons/react/24/solid';
-import useApp, { type Character } from '../../hooks/useApp.tsx';
+import useApp, { type Character } from '../../store/useApp.tsx';
 
 type Props = { character: Character };
 

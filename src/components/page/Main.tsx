@@ -10,7 +10,7 @@ import {
     XMarkIcon,
 } from '@heroicons/react/16/solid';
 import { Fragment, useState } from 'react';
-import useApp, { type Encounter } from '../../hooks/useApp.tsx';
+import useApp, { type Encounter } from '../../store/useApp.tsx';
 import Button from '../Button.tsx';
 import AddCharacterForm from '../encounter/AddCharacterForm.tsx';
 import Characters from '../encounter/Characters.tsx';

@@ -1,5 +1,5 @@
 import { PlusCircleIcon, TrashIcon } from '@heroicons/react/24/solid';
-import useApp from '../../hooks/useApp.tsx';
+import useApp from '../../store/useApp.tsx';
 import Button from '../Button.tsx';
 import Footer from './Footer.tsx';
 import Logo from './Logo.tsx';

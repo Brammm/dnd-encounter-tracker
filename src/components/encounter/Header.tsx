@@ -1,7 +1,7 @@
 import { CheckIcon, PencilIcon } from '@heroicons/react/24/outline';
 import { useEffect, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
-import useApp, { type Encounter } from '../../hooks/useApp.tsx';
+import useApp, { type Encounter } from '../../store/useApp.tsx';
 
 type Props = {
     encounter: Encounter;

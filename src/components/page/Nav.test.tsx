@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import useApp, { type State } from '../../hooks/useApp.tsx';
+import useApp, { type State } from '../../store/useApp.tsx';
 import Nav from './Nav.tsx';
 
 const user = userEvent.setup();

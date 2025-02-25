@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import useApp, {
     type CharacterId,
     type EncounterId,
-} from '../../hooks/useApp.tsx';
+} from '../../store/useApp.tsx';
 
 type Props = {
     characterId: CharacterId;

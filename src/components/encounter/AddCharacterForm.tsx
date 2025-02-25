@@ -1,5 +1,5 @@
 import { type FormEvent, useEffect, useState } from 'react';
-import useApp from '../../hooks/useApp.tsx';
+import useApp from '../../store/useApp.tsx';
 import { calculateMaximum } from '../../util/calculator.ts';
 import Button from '../Button.tsx';
 import HpInput from '../HpInput.tsx';
