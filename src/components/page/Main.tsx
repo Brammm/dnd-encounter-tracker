@@ -124,7 +124,7 @@ export default function Main({ encounter }: Props) {
                 </Dialog>
             </Transition.Root>
 
-            <div className="flex gap-x-4 bg-gray-200 px-8 py-4 shadow-xs">
+            <div className="flex gap-x-4 bg-gray-200 px-8 py-4 shadow-xs sticky top-0">
                 <Button
                     disabled={showAddCharacterForm}
                     impact="secondary"
