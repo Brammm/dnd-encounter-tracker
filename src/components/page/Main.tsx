@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import {
-    ArrowDownIcon,
     ArrowUturnLeftIcon,
+    BarsArrowDownIcon,
     DocumentDuplicateIcon,
     ForwardIcon,
     PlayIcon,
@@ -145,7 +145,7 @@ export default function Main({ encounter }: Props) {
                             size="small"
                             onClick={() => sortOnInitiative(encounter.id)}
                         >
-                            <ArrowDownIcon className="h-4" />
+                            <BarsArrowDownIcon className="h-4" />
                             <span
                                 title="Sort on initiative"
                                 className="hidden lg:inline"
