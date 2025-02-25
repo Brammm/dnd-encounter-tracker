@@ -6,7 +6,7 @@ import Nav from './Nav.tsx';
 
 const user = userEvent.setup();
 
-describe('App', () => {
+describe('Nav component', () => {
     afterEach(() => {
         vi.restoreAllMocks();
     });
