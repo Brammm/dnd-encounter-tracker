@@ -328,10 +328,8 @@ const useApp = create<State & Actions>()(
                 set(({ encounters }) => {
                     encounters[encounterId].activeCharacter = nextCharacter.id;
                     if (nextCharacterIndex === 0) {
-                        encounters[encounterId].turn = encounters[encounterId]
-                            .turn
-                            ? encounters[encounterId].turn++
-                            : 1;
+                        encounters[encounterId].turn =
+                            (encounters[encounterId].turn || 0) + 1;
                     }
                 });
             },
