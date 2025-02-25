@@ -74,7 +74,7 @@ export default function Main({ encounter }: Props) {
                                                     <div className="ml-3 flex h-7 items-center">
                                                         <button
                                                             type="button"
-                                                            className="relative rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                                            className="relative rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                                             onClick={() =>
                                                                 setShowAddCharacterForm(
                                                                     false,
@@ -124,7 +124,7 @@ export default function Main({ encounter }: Props) {
                 </Dialog>
             </Transition.Root>
 
-            <div className="flex gap-x-4 bg-gray-200 px-8 py-4 shadow-sm">
+            <div className="flex gap-x-4 bg-gray-200 px-8 py-4 shadow-xs">
                 <Button
                     disabled={showAddCharacterForm}
                     impact="secondary"

@@ -14,7 +14,7 @@ export default function Characters({ encounter }: Props) {
                         <h2 className="text-xl font-bold text-gray-700 mb-4">
                             Turn: {encounter.turn || 0}
                         </h2>
-                        <div className="grid grid-cols-[auto,1fr,auto,auto,auto] gap-y-4">
+                        <div className="grid grid-cols-[auto_1fr_auto_auto_auto] gap-y-4">
                             {encounter.characters.map((character) => {
                                 return (
                                     <CharacterRow

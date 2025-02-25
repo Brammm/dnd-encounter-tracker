@@ -35,7 +35,7 @@ export default function Button({
     return (
         <button
             className={clsx(
-                'inline-flex items-center rounded gap-x-1.5 text-white ',
+                'inline-flex items-center rounded-sm gap-x-1.5 text-white ',
                 sizeClasses[size],
                 impactClasses[impact],
             )}

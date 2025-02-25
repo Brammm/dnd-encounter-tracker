@@ -31,7 +31,7 @@ export default function ModifyHealth({ characterId, encounterId }: Props) {
     };
 
     return (
-        <div className="shadow-sm rounded inline-flex">
+        <div className="shadow-xs rounded-sm inline-flex">
             <input
                 id={`character-hp-${characterId}`}
                 name={`character-hp-${characterId}`}

@@ -75,6 +75,6 @@ export default function EditableText({
     }
 
     return (
-        <input type="text" className="text-gray-800 rounded" {...inputProps} />
+        <input type="text" className="text-gray-800 rounded-sm" {...inputProps} />
     );
 }
