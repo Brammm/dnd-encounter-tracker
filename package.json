@@ -19,7 +19,7 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "ulid": "^2.3.0",
-        "zustand": "^5.0.1"
+        "zustand": "5.0.3"
     },
     "devDependencies": {
         "@biomejs/biome": "^1.9.4",
@@ -30,7 +30,7 @@
         "@types/node": "^22.9.1",
         "@types/react": "^18.3.12",
         "@types/react-dom": "^18.3.1",
-        "@vitejs/plugin-react": "^4.3.3",
+        "@vitejs/plugin-react": "4.3.4",
         "autoprefixer": "^10.4.16",
         "jsdom": "^25.0.1",
         "postcss": "^8.4.49",
