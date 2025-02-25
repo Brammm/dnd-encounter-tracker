@@ -11,7 +11,8 @@ export type InputProps = {
     step?: number;
 };
 
-export const defaultInputClassName = 'border-gray-400 shadow-xs rounded-sm w-full';
+export const defaultInputClassName =
+    'border-gray-400 shadow-xs rounded-sm w-full';
 
 export default function Input({
     id,

@@ -1,18 +1,18 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @plugin '@tailwindcss/forms';
 
 @theme {
-  --color-primary: #69140e;
-  --color-highlight: #a44200;
-  --color-dark: #3c1518;
-  --color-accent: #669bbc;
+    --color-primary: #69140e;
+    --color-highlight: #a44200;
+    --color-dark: #3c1518;
+    --color-accent: #669bbc;
 
-  --font-serif:
-    'Roboto Slab', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-  --font-sans:
-    'Nunito Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: "Roboto Slab", ui-serif, Georgia, Cambria, "Times New Roman",
+        Times, serif;
+    --font-sans: "Nunito Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
 }
 
 /*
@@ -24,11 +24,11 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
-  }
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
 }

@@ -13,7 +13,7 @@ type InputProps = {
     defaultValue: string;
     onBlur: (e: ChangeEvent<HTMLInputElement>) => void;
     onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
-    ref: RefObject<HTMLInputElement>;
+    ref: RefObject<HTMLInputElement | null>;
 };
 
 type Props = {
@@ -75,6 +75,10 @@ export default function EditableText({
     }
 
     return (
-        <input type="text" className="text-gray-800 rounded-sm" {...inputProps} />
+        <input
+            type="text"
+            className="text-gray-800 rounded-sm"
+            {...inputProps}
+        />
     );
 }
